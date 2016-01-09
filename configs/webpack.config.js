@@ -32,10 +32,10 @@ const htmlLoader = {
   loader: 'raw'
 };
 
-const clientConfig = {
+const browserConfig = {
   target: 'web',
   entry: {
-    app: path.resolve(SRC_DIR, 'client.ts'),
+    app: path.resolve(SRC_DIR, 'browser.ts'),
     vendor: [
       'es6-shim',
       'es6-promise',
@@ -43,16 +43,36 @@ const clientConfig = {
       'zone.js/lib/browser/zone-microtask',
       'zone.js/lib/browser/long-stack-trace-zone',
       'angular2/core',
-      'angular2/platform/browser'
+      'angular2/platform/worker_render'
     ]
   },
   output: {
     path: PUBLIC_DIR,
-    filename: '[name].js'
+    filename: '[name]_browser.js'
   },
   plugins: [
-    new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity })
+    new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor_browser.js', minChunks: Infinity })
   ],
+  resolve: {
+    extensions: ['', '.ts', '.js']
+  },
+  module: {
+    loaders: [
+      typescriptLoader,
+      htmlLoader
+    ]
+  }
+};
+
+const workerConfig = {
+  target: 'webworker',
+  entry: {
+    app: path.resolve(SRC_DIR, 'worker.ts'),
+  },
+  output: {
+    path: PUBLIC_DIR,
+    filename: '[name]_worker.js'
+  },
   resolve: {
     extensions: ['', '.ts', '.js']
   },
@@ -91,4 +111,4 @@ const serverConfig = {
   }
 };
 
-module.exports = [clientConfig, serverConfig];
+module.exports = [browserConfig, workerConfig, serverConfig];
