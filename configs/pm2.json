@@ -1,0 +1,12 @@
+{
+  "apps": [{
+    "name": "angular2-fullstack-starter",
+    "script": "./dist/private/app.js",
+    "watch": true,
+    "error_file": "./logs/errors.log",
+    "out_file": "./logs/output.log",
+    "env": {
+      "PORT": 3000
+    }
+  }]
+}
