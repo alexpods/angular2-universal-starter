@@ -1,4 +1,4 @@
-# Angular2 Fullstack Starter Kit
+# Angular2 FullStack Starter Kit
 Enjoy server-side rendering and WebWorkers in your application!
 
 #Quick start

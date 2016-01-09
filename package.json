@@ -1,11 +1,11 @@
 {
   "name": "angular2-fullstack-starter",
   "version": "0.1.0",
-  "description": "Angular2 Fullstack Starter Kit: Enjoy server-side rendering and WebWorkers in your application!",
+  "description": "Angular2 FullStack Starter Kit: Enjoy server-side rendering and WebWorkers in your application!",
   "author": "Alex Podskrebyshev <aleksey.podskrebyshev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --config ./configs/webpack.config.js",
+    "build": "webpack --config --progress ./configs/webpack.config.js",
     "prestart": "npm run build",
     "start": "pm2 start ./configs/pm2.json",
     "stop": "pm2 delete ./configs/pm2.json",
