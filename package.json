@@ -1,10 +1,11 @@
 {
   "name": "angular2-fullstack-starter",
   "version": "0.1.0",
-  "description": "Angular2 FullStack Starter Kit: Enjoy server-side rendering and WebWorkers in your application!",
+  "description": "Enjoy Server-Side rendering and WebWorkers in your Angular2 application!",
   "author": "Alex Podskrebyshev <aleksey.podskrebyshev@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "postinstall": "typings install",
     "clean": "rimraf dist logs",
     "clean:dist": "rimraf dist",
     "clean:logs": "rimraf logs",
@@ -15,7 +16,8 @@
     "stop": "pm2 delete ecosystem.json",
     "restart": "pm2 restart ecosystem.json",
     "pm2": "pm2",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "typings": "typings"
   },
   "dependencies": {
     "angular2": "2.0.0-beta.0",
@@ -28,12 +30,12 @@
     "zone.js": "^0.5.10"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^0.3.3",
     "pm2": "^1.0.0",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.5.0",
     "ts-loader": "^0.7.2",
     "typescript": "^1.7.5",
+    "typings": "^0.6.1",
     "webpack": "^1.12.10",
     "webpack-dev-middleware": "^1.4.0"
   }

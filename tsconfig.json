@@ -8,6 +8,7 @@
     "experimentalDecorators": true
   },
   "files": [
+    "./typings/main.d.ts",
     "./src/server/boot.ts",
     "./src/boot_worker_app.ts",
     "./src/boot_worker_render.ts"
@@ -15,6 +16,6 @@
   "filesGlob": [
     "./src/**/*",
     "./test/**/*.ts",
-    "!./node_modules/**/*.ts"
+    "!node_modules/**/*.ts"
   ]
 }

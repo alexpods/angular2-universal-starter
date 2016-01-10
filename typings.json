@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "es6-promise": "github:typings/typed-es6-promise"
+  },
+  "devDependencies": {},
+  "ambientDependencies": {
+    "node": "github:angular/DefinitelyTyped/node/node.d.ts",
+    "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts",
+    "serve-static": "github:implydata/pivot/typings/serve-static/serve-static.d.ts",
+    "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts",
+    "es6-shim": "github:angular/DefinitelyTyped/es6-shim/es6-shim.d.ts",
+    "zone": "github:angular/DefinitelyTyped/zone/zone.d.ts"
+  }
+}
