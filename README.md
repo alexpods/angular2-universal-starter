@@ -1,10 +1,10 @@
-# Angular2 Fullstack Starter Kit
+# Angular2 Universl Starter Kit
 Enjoy Server-Side rendering and WebWorkers in your Angular2 application!
 
 #Quick start
 ```bash
 # clone the repo without git history
-git clone --depth 1 https://github.com/alexpods/angular2-fullstack-starter.git your_poject
+git clone --depth 1 https://github.com/alexpods/angular2-universal-starter.git your_poject
 
 # change current directory to your_project
 cd your_project
