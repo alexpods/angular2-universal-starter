@@ -8,6 +8,6 @@ export class App {
   name = 'World';
 
   constructor() {
-    setTimeout(() => this.name = 'Angular 10', 1000);
+    setTimeout(() => this.name = 'Angular', 1000);
   }
 }

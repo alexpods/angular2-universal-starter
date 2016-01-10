@@ -5,11 +5,15 @@
   "author": "Alex Podskrebyshev <aleksey.podskrebyshev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --progress --config ./configs/webpack.config.js",
+    "clean": "rimraf dist logs",
+    "clean:dist": "rimraf dist",
+    "clean:logs": "rimraf logs",
+    "prebuild": "npm run clean:dist",
+    "build": "webpack --progress",
     "prestart": "npm run build",
-    "start": "pm2 start ./configs/pm2.json",
-    "stop": "pm2 delete ./configs/pm2.json",
-    "restart": "pm2 restart ./configs/pm2.json",
+    "start": "pm2 start ecosystem.json",
+    "stop": "pm2 delete ecosystem.json",
+    "restart": "pm2 restart ecosystem.json",
     "pm2": "pm2",
     "webpack": "webpack"
   },
@@ -24,8 +28,10 @@
     "zone.js": "^0.5.10"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^0.3.3",
     "pm2": "^1.0.0",
     "raw-loader": "^0.5.1",
+    "rimraf": "^2.5.0",
     "ts-loader": "^0.7.2",
     "typescript": "^1.7.5",
     "webpack": "^1.12.10",
