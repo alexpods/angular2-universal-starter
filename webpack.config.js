@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
@@ -10,6 +9,13 @@ const DIST_DIR    = path.resolve(ROOT_DIR, 'dist');
 const PUBLIC_DIR  = path.resolve(DIST_DIR, 'public');
 const PRIVATE_DIR = path.resolve(DIST_DIR, 'private');
 
+function merge(obj1, obj2) {
+  obj1 = obj1 || {};
+  obj2 = obj2 || {};
+  for (var prop in obj2) obj1[prop] = obj2[prop];
+  return obj1;
+}
+
 const nodeModules = fs.readdirSync('./node_modules').filter(function(name) {
   return name != '.bin';
 });
@@ -19,7 +25,7 @@ const loaders = {
     return {
       test: /\.ts$/,
       loader: 'ts',
-      query: _.assign({
+      query: merge({
         'ignoreDiagnostics': [
           2403, // 2403 -> Subsequent variable declarations
           2300, // 2300 -> Duplicate identifier

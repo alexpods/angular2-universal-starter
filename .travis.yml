@@ -1,0 +1,17 @@
+language: node_js
+
+node_js:
+  - 0.12.0
+  - 5.4.0
+  
+before_install:
+  - npm install -g npm@3.0
+  
+install:
+  - npm install
+
+script:
+  - npm run build
+  - npm run test
+  - npm start
+  - npm stop
