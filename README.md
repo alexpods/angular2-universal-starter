@@ -6,15 +6,28 @@
 [![Issue Stats](http://issuestats.com/github/alexpods/angular2-universal-starter/badge/issue?style=flat)](http://issuestats.com/github/alexpods/angular2-universal-starter)
 [![Join the chat at https://gitter.im/alexpods/angular2-universal-starter](https://badges.gitter.im/alexpods/angular2-universal-starter.svg)](https://gitter.im/alexpods/angular2-universal-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Enjoy Server-Side rendering and WebWorkers in your Angular2 application!
+Enjoy Server Side rendering and Web Workers in your Angular2 Application
+
+
+
+#What we've got here
+
+- [Server Sider rendering](https://angularu.com/VideoSession/2015sf/angular-2-server-rendering)
+- [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) 
+- [Preboot](https://www.npmjs.com/package/preboot) support
+- [Express](http://expressjs.com/) server
+- [Typescript](http://www.typescriptlang.org/) with [Typings](https://github.com/typings/typings)
+- [PM2](http://pm2.keymetrics.io/)
+- [Webpack](https://webpack.github.io/)
+- Unit testing with [Karma]()
 
 #Quick start
 ```bash
 # clone the repo without git history
-git clone --depth 1 https://github.com/alexpods/angular2-universal-starter.git your_poject
+git clone --depth 1 https://github.com/alexpods/angular2-universal-starter.git
 
-# change current directory to your_project
-cd your_project
+# change current directory to angular2-universal-starter
+cd angular2-universal-starter
 
 # install dependencies
 npm install
@@ -22,50 +35,50 @@ npm install
 # run the server
 npm start
 ```
-Go to [http://localhost:3000](http://localhost:3000 ) in your browser.
+Go to [http://localhost:3000](http://localhost:3000) in your browser.
 
 You may want to stop or restart the server:
 ```bash
-# Stop the server
+# stop the server
 npm stop
 
-# Restart the server
+# restart the server
 npm restart
 ```
 
 #Building
 ```bash
-# Build the probject
+# build the probject
 npm run buid
 
-# Build the project and start to watch for its changes
+# build the project and start to watch for its changes
 npm run build:watch
 ```
 
 #Testing
 ```bash
-# Run all tests (single run)
+# run all tests (single run)
 npm test
 ```
 
 ##Unit Testing
 ```bash
-# Run unit tests (single run)
+# run unit tests (single run)
 npm run test:unit
 
-# Run unit tests and start watch for changes
+# run unit tests and start watch for changes
 npm run test:unit:watch
 ```
 
 #Cleaning
 ```bash
-# Remove "dist" and "logs" folders
+# remove "dist" and "logs" folders
 npm run clean
 
-# Remove "dist" folder
+# remove "dist" folder
 npm run clean:dist
 
-# Remove "logs" folder
+# remove "logs" folder
 npm run clean:logs
 ```
 
