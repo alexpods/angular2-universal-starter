@@ -1,3 +1,5 @@
+[![Dependency Status](https://david-dm.org/alexpods/angular2-universal-starter.svg)](https://david-dm.org/alexpods/angular2-universal-starter)
+
 # Angular2 Universal Starter Kit
 Enjoy Server-Side rendering and WebWorkers in your Angular2 application!
 
