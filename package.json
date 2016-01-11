@@ -1,7 +1,7 @@
 {
   "name": "angular2-universal-starter",
   "version": "0.1.0",
-  "description": "Enjoy Server-Side rendering and WebWorkers in your Angular2 application!",
+  "description": "Enjoy Server Side rendering and Web Workers in your Angular2 Application",
   "author": "Alex Podskrebyshev <aleksey.podskrebyshev@gmail.com>",
   "license": "MIT",
   "scripts": {
