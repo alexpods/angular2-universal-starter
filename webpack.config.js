@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
@@ -13,26 +14,31 @@ const nodeModules = fs.readdirSync('./node_modules').filter(function(name) {
   return name != '.bin';
 });
 
-const typescriptLoader = {
-  test: /\.ts$/,
-  loader: 'ts',
-  query: {
-    'ignoreDiagnostics': [
-      2403, // 2403 -> Subsequent variable declarations
-      2300, // 2300 -> Duplicate identifier
-      2374, // 2374 -> Duplicate number index signature
-      2375  // 2375 -> Duplicate string index signature
-    ]
+const loaders = {
+  ts: function(opts) {
+    return {
+      test: /\.ts$/,
+      loader: 'ts',
+      query: _.assign({
+        'ignoreDiagnostics': [
+          2403, // 2403 -> Subsequent variable declarations
+          2300, // 2300 -> Duplicate identifier
+          2374, // 2374 -> Duplicate number index signature
+          2375  // 2375 -> Duplicate string index signature
+        ]
+      }, opts && opts.query),
+      exclude: [
+        /node_modules/
+      ]
+    };    
   },
-  exclude: [
-    /node_modules/
-  ]
-};
-
-const htmlLoader = {
-  test: /\.html/,
-  loader: 'raw'
-};
+  html: function() {
+    return {
+      test: /\.html/,
+      loader: 'raw'
+    }
+  }
+}
 
 const clientConfig = {
   devtool: 'inline-source-map',
@@ -54,8 +60,8 @@ const clientConfig = {
   },
   module: {
     loaders: [
-      typescriptLoader,
-      htmlLoader
+      loaders.ts(),
+      loaders.html()
     ]
   }
 };
@@ -81,10 +87,30 @@ const serverConfig = {
   },
   module: {
     loaders: [
-      typescriptLoader,
-      htmlLoader
+      loaders.ts(),
+      loaders.html()
     ]
   }
 };
 
+const testingConfig = {
+  devtool: 'inline-source-map',
+  resolve: {
+    extensions: ['', '.ts', '.js']
+  },
+  module: {
+    loaders: [
+      loaders.ts({ query: { transpileOnly: true } })
+    ]
+  },
+  stats: { 
+    colors: true, 
+    reasons: true 
+  }
+}
+
 module.exports = [clientConfig, serverConfig];
+
+module.exports.clientConfig  = clientConfig;
+module.exports.serverConfig  = serverConfig;
+module.exports.testingConfig = testingConfig;

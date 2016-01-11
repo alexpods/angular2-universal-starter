@@ -17,6 +17,22 @@ npm start
 ```
 Go to [http://localhost:3000](http://localhost:3000 ) in your browser.
 
+#Testing
+
+```bash
+# Run all tests (single run)
+npm test
+```
+
+##Unit Testing
+```bash
+# Run unit tests (single run)
+npm run test:unit
+
+# Run unit tests and start watch for changes
+npm run test:unit:watch
+```
+
 #License
 The MIT License (MIT)
 
