@@ -1,4 +1,4 @@
-# Angular2 Universl Starter Kit
+# Angular2 Universal Starter Kit
 Enjoy Server-Side rendering and WebWorkers in your Angular2 application!
 
 #Quick start

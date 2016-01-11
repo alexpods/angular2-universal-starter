@@ -11,10 +11,11 @@
     "clean:logs": "rimraf logs",
     "prebuild": "npm run clean:dist",
     "build": "webpack --progress",
+    "build:watch": "npm run build -- --watch",
     "prestart": "npm run build",
     "start": "pm2 start ecosystem.json",
     "stop": "pm2 delete ecosystem.json",
-    "restart": "pm2 restart ecosystem.json",
+    "restart": "npm run stop && npm run start",
     "pm2": "pm2",
     "webpack": "webpack",
     "typings": "typings"

@@ -35,6 +35,7 @@ const htmlLoader = {
 };
 
 const clientConfig = {
+  devtool: 'inline-source-map',
   target: 'web',
   entry: {
     boot_worker: path.resolve(SRC_DIR, 'boot_worker_app.ts'),
