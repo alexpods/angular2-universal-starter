@@ -17,8 +17,25 @@ npm start
 ```
 Go to [http://localhost:3000](http://localhost:3000 ) in your browser.
 
-#Testing
+You may want to stop or restart the server:
+```bash
+# Stop the server
+npm stop
 
+# Restart the server
+npm restart
+```
+
+#Building
+```bash
+# Build the probject
+npm run buid
+
+# Build the project and start to watch for its changes
+npm run build:watch
+```
+
+#Testing
 ```bash
 # Run all tests (single run)
 npm test
@@ -31,6 +48,18 @@ npm run test:unit
 
 # Run unit tests and start watch for changes
 npm run test:unit:watch
+```
+
+#Cleaning
+```bash
+# Remove "dist" and "logs" folders
+npm run clean
+
+# Remove "dist" folder
+npm run clean:dist
+
+# Remove "logs" folder
+npm run clean:logs
 ```
 
 #License
