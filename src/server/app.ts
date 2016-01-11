@@ -12,13 +12,16 @@ export const app = express();
 app.engine('html', ng2engine);
 app.use(serveStatic(PUBLIC_PATH));
 
-const providers = [];
+const providers = [
+];
 
 const preboot = { 
   appRoot: 'app', 
+  freeze: false,
+  replay: 'rerender',
   buffer: true, 
   debug: true, 
   uglify: false 
-}
+};
 
 app.get('/', (req, res) => res.render(INDEX_PATH, { App, providers, preboot }));

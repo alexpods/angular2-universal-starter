@@ -14,7 +14,7 @@ Enjoy Server Side rendering and Web Workers in your Angular2 Application
 
 - [Server Sider rendering](https://angularu.com/VideoSession/2015sf/angular-2-server-rendering)
 - [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) 
-- [Preboot](https://www.npmjs.com/package/preboot) support
+- [Preboot](https://www.npmjs.com/package/preboot) support (you can experement with its options [here](https://github.com/alexpods/angular2-universal-starter/blob/master/src/server/app.ts#L18))
 - [Express](http://expressjs.com/) server
 - [Typescript](http://www.typescriptlang.org/) with [Typings](https://github.com/typings/typings)
 - [PM2](http://pm2.keymetrics.io/)

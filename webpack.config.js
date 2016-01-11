@@ -30,7 +30,8 @@ const loaders = {
           2403, // 2403 -> Subsequent variable declarations
           2300, // 2300 -> Duplicate identifier
           2374, // 2374 -> Duplicate number index signature
-          2375  // 2375 -> Duplicate string index signature
+          2375, // 2375 -> Duplicate string index signature,
+          2307  // 2307 -> Cannot find module './App.html'. (.html and .css extensions)
         ]
       }, opts && opts.query),
       exclude: [
@@ -40,9 +41,21 @@ const loaders = {
   },
   html: function() {
     return {
-      test: /\.html/,
+      test: /\.html$/,
       loader: 'raw'
-    }
+    };
+  },
+  css: function() {
+    return {
+      test: /\.css$/,
+      loader: 'raw'
+    };
+  },
+  json: function() {
+    return {
+      test: /\.json$/,
+      loader: 'json'
+    };
   }
 }
 
@@ -67,12 +80,15 @@ const clientConfig = {
   module: {
     loaders: [
       loaders.ts(),
-      loaders.html()
+      loaders.html(),
+      loaders.css(),
+      loaders.json()
     ]
   }
 };
 
 const serverConfig = {
+  devtool: 'inline-source-map',
   target: 'node',
   entry: {
     app: path.resolve(SRC_DIR, 'server/boot.ts')
@@ -94,7 +110,9 @@ const serverConfig = {
   module: {
     loaders: [
       loaders.ts(),
-      loaders.html()
+      loaders.html(),
+      loaders.css(),
+      loaders.json()
     ]
   }
 };
@@ -106,7 +124,10 @@ const testingConfig = {
   },
   module: {
     loaders: [
-      loaders.ts({ query: { transpileOnly: true } })
+      loaders.ts({ query: { transpileOnly: true } }),
+      loaders.html(),
+      loaders.css(),
+      loaders.json()
     ]
   },
   stats: { 
