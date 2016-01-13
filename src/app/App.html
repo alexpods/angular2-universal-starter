@@ -4,6 +4,6 @@
     Try to push the button before angular2 will be loaded. 
     Preboot will catch the "click" event and replay it later.
   </p>
-  <button (click)="onCheckPreboot()">Check "preboot"</button>
-  <span *ngIf="message">{{ message }}</span>
+  <button id="check-preboot" (click)="onCheckPreboot()">Check "preboot"</button>
+  <span id="message-preboot" *ngIf="message">{{ message }}</span>
 </div>

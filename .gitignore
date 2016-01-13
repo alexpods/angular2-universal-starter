@@ -2,3 +2,5 @@ node_modules
 dist
 logs
 typings
+Vagrantfile
+npm-debug.log

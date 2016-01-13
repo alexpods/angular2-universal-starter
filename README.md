@@ -19,7 +19,8 @@ Enjoy Server Side rendering and Web Workers in your Angular2 Application
 - [Typescript](http://www.typescriptlang.org/) with [Typings](https://github.com/typings/typings)
 - [PM2](http://pm2.keymetrics.io/)
 - [Webpack](https://webpack.github.io/)
-- Unit testing with [Karma]()
+- Unit testing with [Karma](http://karma-runner.github.io/)
+- End-to-End testing with [Protractor](https://angular.github.io/protractor)
 
 #Quick start
 ```bash
@@ -56,6 +57,9 @@ npm run build:watch
 ```
 
 #Testing
+The next command will run both unit and end-to-end tests.
+
+For end-to-end tests you need to start Selenium Server first (see [End-to-End Testing](##end-to-end-testing)).
 ```bash
 # run all tests (single run)
 npm test
@@ -68,6 +72,16 @@ npm run test:unit
 
 # run unit tests and start watch for changes
 npm run test:unit:watch
+```
+
+##End-to-End Testing
+For end-to-end tests you nedd to start Selenium Server (webdriver) first.
+```bash
+# start Selenium Server (webdriver)
+npm run webdriver:start
+
+# run ent-to-end test (single run)
+npm run test:e2e
 ```
 
 #Cleaning
