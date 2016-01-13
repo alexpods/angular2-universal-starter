@@ -63,16 +63,21 @@ const clientConfig = {
   devtool: 'inline-source-map',
   target: 'web',
   entry: {
-    boot_worker: path.resolve(SRC_DIR, 'boot_worker_app.ts'),
-    boot: path.resolve(SRC_DIR, 'boot_worker_render.ts'),
+    worker: path.resolve(SRC_DIR, 'boot_worker_app.ts'),
+    main: path.resolve(SRC_DIR, 'boot_worker_render.ts'),
     vendor: path.resolve(SRC_DIR, 'vendor.ts'),
   },
   output: {
     path: PUBLIC_DIR,
-    filename: '[name].js'
+    filename: '[name].js',
+    // if you're changing this field, don't forget to synchronize it with "replaceBootWorkerEnsure()"
+    chunkFilename: "[id].chunk.js" 
   },
   plugins: [
-    new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity })
+    new CommonsChunkPlugin({ name: 'vendor',  minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'boot_browser', chunks: ['vendor', 'browser'], minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'boot_worker',  chunks: ['vendor', 'worker'], minChunks: Infinity }),
+    replaceBootWorkerEnsure()
   ],
   resolve: {
     extensions: ['', '.ts', '.js']
@@ -88,7 +93,6 @@ const clientConfig = {
 };
 
 const serverConfig = {
-  devtool: 'inline-source-map',
   target: 'node',
   entry: {
     app: path.resolve(SRC_DIR, 'server/boot.ts')
@@ -141,3 +145,35 @@ module.exports = [clientConfig, serverConfig];
 module.exports.clientConfig  = clientConfig;
 module.exports.serverConfig  = serverConfig;
 module.exports.testingConfig = testingConfig;
+    
+/**
+ * TODO: HACK!! Remove it when it becomes possible.
+ * This is the way to share the same "vendor" amoung browser main thread and
+ * web worker thread. I don't want to have two vendor chunks for each environment
+ */
+function replaceBootWorkerEnsure() {
+  return{ 
+    apply(compiler) {
+      compiler.plugin('done', function(stats) {
+        const chunk = stats.compilation.namedChunks['boot_worker'];
+        const chunkPath = compiler.outputPath + '/' + chunk.files[0];
+        
+        // sync doesn't hurt here, 'boot_worker' chunk will be compiled only once per watch
+        const content = fs.readFileSync(chunkPath, { encoding: 'utf8' });
+        
+        fs.writeFileSync(chunkPath, content.replace(
+/__webpack_require__\.e[\s\S]*?head.appendChild\(script\);[\s\/\*]*?\}[\s\/\*]*?\}/
+, `
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
+/******/ 		// "1" is the signal for "already loaded"
+/******/ 		if(!installedChunks[chunkId]) {
+/******/      var origin = location.origin;
+/******/ 			importScripts(origin + "/" + chunkId + ".chunk.js");
+/******/ 		}
+/******/ 		callback.call(null, __webpack_require__);
+/******/ 	};
+        `), { encoding: 'utf8' })
+      })
+    }
+  };
+}

@@ -18,6 +18,8 @@
     "restart": "pm2 restart ecosystem.json",
     "stop": "pm2 delete ecosystem.json",
     "test": "npm run test:unit && npm run test:e2e",
+    "show": "pm2 show $(node -e \"console.log(require('./ecosystem.json').name)\")",
+    "logs": "pm2 logs $(node -e \"console.log(require('./ecosystem.json').name)\")",
     "test:unit": "karma start --single-run",
     "test:unit:watch": "karma start",
     "test:e2e": "protractor protractor.conf.js",
