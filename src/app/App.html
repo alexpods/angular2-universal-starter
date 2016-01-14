@@ -5,12 +5,23 @@
     Preboot will catch the "click" event and replay it later.
   </p>
   <div>
-    <button (click)="onCheckPreboot()">Check "Preboot"</button>
-    <span *ngIf="messagePreboot">{{ messagePreboot }}</span>
+    <button id="check-preboot" (click)="onCheckPreboot()">Check "Preboot"</button>
+    <span id="message-preboot" *ngIf="messagePreboot">{{ messagePreboot }}</span>
   </div>
   <br />
+  <br />
+  <p>
+    For big applications it’s not efficient to put all code into a single file,
+    especially if some blocks of code are only required under some circumstances. It's much better
+    to split your application into several parts and load them only if they're needed.  
+    That's where <b>Webpack's Code Spliting</b> is shinning.
+    You just need to use its <b>require.ensure()</b> function to specify split points in your
+    application and webpack will do the rest for you.
+    Read more about code splitting and how to use it <a href="https://webpack.github.io/docs/code-splitting.html">here</a>.
+    If you push the next button, the greeting message will be lazy loaded.
+  </p>
   <div>
-    <button (click)="onCheckLazyLoading()">Check "Lazy Loading"</button>
-    <span *ngIf="messageLazyLoading">{{ messageLazyLoading }}</span>
+    <button id="check-lazyloading" (click)="onCheckLazyLoading()">Check "Lazy Loading"</button>
+    <span id="message-lazyloading" *ngIf="messageLazyLoading">{{ messageLazyLoading }}</span>
   </div>
 </div>

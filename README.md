@@ -16,9 +16,9 @@ Enjoy Server Side rendering and Web Workers in your Angular2 Application
 - Entire Angular2 application is running in a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) (UI always will be smooth)
 - [Preboot](https://www.npmjs.com/package/preboot) to catch browser events before Angular2 is ready to work (you can experement with its options [here](https://github.com/alexpods/angular2-universal-starter/blob/master/src/server/app.ts#L18))
 - [Express](http://expressjs.com/)
+- [Webpack](https://webpack.github.io/) and its awesome [Code Splitting](https://webpack.github.io/docs/code-splitting.html) feature which allows us to lazy load parts of an application.
 - [Typescript](http://www.typescriptlang.org/) with [Typings](https://github.com/typings/typings)
 - [PM2](http://pm2.keymetrics.io/)
-- [Webpack](https://webpack.github.io/)
 - Unit testing with [Karma](http://karma-runner.github.io/)
 - End-to-End testing with [Protractor](https://angular.github.io/protractor)
 
@@ -74,7 +74,7 @@ npm run test:unit
 npm run test:unit:watch
 ```
 
-##End-to-End Testing
+##End-to-End Testging
 For end-to-end tests you nedd to start Selenium Server (webdriver) first.
 ```bash
 # start Selenium Server (webdriver)

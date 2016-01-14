@@ -26,10 +26,9 @@ export class App {
   }
   
   onCheckLazyLoading() {
-    require.ensure(['./greeter.ts'], (require) => {
+    require.ensure([], () => {
       const greeter = require('./greeter.ts');
-      greeter.greet();
-      this.messageLazyLoading = 'Lazy loading is working';
-    })
+      this.messageLazyLoading = greeter.greet();;
+    });
   }
 }

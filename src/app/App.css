@@ -23,6 +23,7 @@ button:active {
 }
 
 p {
+  font: 12pt/1.5 Helvetica;
   padding: 15px;
   color: #31708f;
   border: 1px solid #bce8f1;

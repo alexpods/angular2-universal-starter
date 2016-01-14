@@ -15,9 +15,23 @@ describe('App', () => {
     return tcb.createAsync(App).then((fixture) => {
       const { componentInstance, nativeElement } = fixture;
       
-      expect(componentInstance.message).toBeFalsy();
-      nativeElement.querySelector('button').click();
-      expect(componentInstance.message).toBeTruthy();
+      expect(componentInstance.messagePreboot).toBeFalsy();
+      nativeElement.querySelector('#check-preboot').click();
+      expect(componentInstance.messagePreboot).toBeTruthy();
     });
-  }))
+  }));
+  
+  it('should lazy load service', injectAsync([TestComponentBuilder], (tcb) => {
+    return tcb.createAsync(App).then((fixture) => {
+      const { componentInstance, nativeElement } = fixture;
+      
+      expect(componentInstance.messageLazyLoading).toBeFalsy();
+      nativeElement.querySelector('#check-lazyloading').click();
+      expect(componentInstance.messageLazyLoading).toBeFalsy();
+      
+      return new Promise(resolve => setTimeout(resolve, 0)).then(() => {
+        expect(componentInstance.messageLazyLoading).toBeTruthy();        
+      });
+    });
+  }));
 });
