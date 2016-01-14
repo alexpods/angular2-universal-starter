@@ -59,7 +59,7 @@ npm run build:watch
 #Testing
 The next command will run both unit and end-to-end tests.
 
-For end-to-end tests you need to start Selenium Server first (see [End-to-End Testing](##end-to-end-testing)).
+For end-to-end tests you need to start Selenium Server first (see [End-to-End Testing](#end-to-end-testing)).
 ```bash
 # run all tests (single run)
 npm test
