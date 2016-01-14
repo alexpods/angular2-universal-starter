@@ -1,5 +1,5 @@
 import { describe, it, expect, TestComponentBuilder, injectAsync, tick, fakeAsync } from 'angular2/testing';
-import { App } from './App.ts';
+import { App } from './app.ts';
 
 describe('App', () => {
   it('should change name to "Angular" after 1s', injectAsync([TestComponentBuilder], fakeAsync((tcb) => {

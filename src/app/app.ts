@@ -2,14 +2,12 @@ declare var require: any;
 
 import { Component } from 'angular2/core';
 import { NgIf } from 'angular2/common';
-import * as style from './App.css';
-import * as template from './App.html';
 
 @Component({
   selector: 'app',
   directives: [NgIf],
-  template,
-  styles: [style]
+  template: require('./app.html'),
+  styles: [require('./app.css')]
 })
 export class App {
   name = 'World';
