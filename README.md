@@ -74,7 +74,7 @@ npm run test:unit
 npm run test:unit:watch
 ```
 
-##End-to-End Testging
+##End-to-End Testing
 For end-to-end tests you nedd to start Selenium Server (webdriver) first.
 ```bash
 # start Selenium Server (webdriver)
