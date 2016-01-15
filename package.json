@@ -1,9 +1,13 @@
 {
   "name": "angular2-universal-starter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Enjoy Server Side rendering and Web Workers in your Angular2 Application",
   "author": "Alex Podskrebyshev <aleksey.podskrebyshev@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexpods/angular2-universal-starter.git"
+  },
   "scripts": {
     "postinstall": "typings install && npm run webdriver:update",
     "clean": "rimraf dist logs",
