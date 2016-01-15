@@ -9,7 +9,7 @@ import {
 const workerScriptUrl = URL.createObjectURL(new Blob([`
   var window = this; 
   var origin = this.location.origin;
-  importScripts(origin + '/boot_worker.js', origin + '/vendor.js', origin + '/worker.js');
+  importScripts(origin + '/boot_worker.js', origin + '/vendor.js', origin + '/worker_app.js');
 `], { 
     type: 'text/javascript' 
 }));

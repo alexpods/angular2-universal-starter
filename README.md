@@ -47,6 +47,24 @@ npm stop
 npm restart
 ```
 
+##Turning server side rendering and web workers on/off
+You can optionally turn server sider rendering or web web workers suport on/off. You just need
+to change `NG2_SS` and `NG2_WW` environment variables in `ecosystem.json` file:
+```js
+{
+  // ...
+  "env": {
+    // ...
+    "NG2_SS": true, // Server Side Rendering. Set it to `false` to turn it off.
+    "NG2_WW": true  // Web Workers support. Set it to `false` to turn it off
+  }
+}
+```
+Then you need to restart the server to apply the changes:
+```bash
+npm restart
+```
+
 #Building
 ```bash
 # build the probject

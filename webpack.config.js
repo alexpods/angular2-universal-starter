@@ -63,8 +63,9 @@ const clientConfig = {
   devtool: 'inline-source-map',
   target: 'web',
   entry: {
-    worker: path.resolve(SRC_DIR, 'boot_worker_app.ts'),
-    main: path.resolve(SRC_DIR, 'boot_worker_render.ts'),
+    browser: path.resolve(SRC_DIR, 'boot_browser.ts'),
+    worker: path.resolve(SRC_DIR, 'boot_worker_render.ts'),
+    worker_app: path.resolve(SRC_DIR, 'boot_worker_app.ts'),
     vendor: path.resolve(SRC_DIR, 'vendor.ts'),
   },
   output: {
@@ -76,7 +77,8 @@ const clientConfig = {
   plugins: [
     new CommonsChunkPlugin({ name: 'vendor',  minChunks: Infinity }),
     new CommonsChunkPlugin({ name: 'boot_browser', chunks: ['vendor', 'browser'], minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'boot_worker',  chunks: ['vendor', 'worker'], minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'boot_worker', chunks: ['vendor', 'worker'], minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'boot_worker_app',  chunks: ['vendor', 'worker_app'], minChunks: Infinity }),
     replaceBootWorkerEnsure()
   ],
   resolve: {

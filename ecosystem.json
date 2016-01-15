@@ -2,9 +2,13 @@
   "name": "angular2-universal-starter",
   "script": "./dist/private/app.js",
   "watch": "./dist",
+  "log_date_format": "YYYY-MM-DD HH:mm Z",
   "error_file": "./logs/errors.log",
   "out_file": "./logs/output.log",
+  "autorestart": true,
   "env": {
-    "PORT": 3000
+    "PORT": 3000,
+    "NG2_SS": true,
+    "NG2_WW": true
   }
 }

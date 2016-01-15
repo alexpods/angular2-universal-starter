@@ -17,7 +17,7 @@
     "restart": "npm stop && npm start",
     "stop": "pm2 delete ecosystem.json",
     "test": "npm run test:unit && npm run test:e2e",
-    "show": "pm2 show $(node -e \"console.log(require('./ecosystem.json').name)\")",
+    "status": "pm2 show $(node -e \"console.log(require('./ecosystem.json').name)\")",
     "logs": "pm2 logs $(node -e \"console.log(require('./ecosystem.json').name)\")",
     "test:unit": "karma start --single-run",
     "test:unit:watch": "karma start",
