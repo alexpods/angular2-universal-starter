@@ -63,9 +63,9 @@ const clientConfig = {
   devtool: 'inline-source-map',
   target: 'web',
   entry: {
-    browser: path.resolve(SRC_DIR, 'boot_browser.ts'),
-    worker: path.resolve(SRC_DIR, 'boot_worker_render.ts'),
-    worker_app: path.resolve(SRC_DIR, 'boot_worker_app.ts'),
+    boot_browser: path.resolve(SRC_DIR, 'boot_browser.ts'),
+    boot_worker: path.resolve(SRC_DIR, 'boot_worker_render.ts'),
+    boot_worker_app: path.resolve(SRC_DIR, 'boot_worker_app.ts'),
     vendor: path.resolve(SRC_DIR, 'vendor.ts'),
   },
   output: {
@@ -76,9 +76,9 @@ const clientConfig = {
   },
   plugins: [
     new CommonsChunkPlugin({ name: 'vendor',  minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'boot_browser', chunks: ['vendor', 'browser'], minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'boot_worker', chunks: ['vendor', 'worker'], minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'boot_worker_app',  chunks: ['vendor', 'worker_app'], minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'run_browser', chunks: ['vendor', 'boot_browser'], minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'run_worker', chunks: ['vendor', 'boot_worker'], minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'run_worker_app',  chunks: ['vendor', 'boot_worker_app'], minChunks: Infinity }),
     replaceBootWorkerEnsure()
   ],
   resolve: {
@@ -157,7 +157,7 @@ function replaceBootWorkerEnsure() {
   return{ 
     apply(compiler) {
       compiler.plugin('done', function(stats) {
-        const chunk = stats.compilation.namedChunks['boot_worker'];
+        const chunk = stats.compilation.namedChunks['run_worker'];
         const chunkPath = compiler.outputPath + '/' + chunk.files[0];
         
         // sync doesn't hurt here, 'boot_worker' chunk will be compiled only once per watch

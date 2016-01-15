@@ -15,15 +15,15 @@ const hasWW = 'NG2_WW' in process.env ? process.env.NG2_WW === 'true' : true;
 const indexHtml = require('../index.html');
 
 const workerScripts = `
-  <script type="text/javascript" src="boot_worker.js"></script>
+  <script type="text/javascript" src="run_worker.js"></script>
   <script type="text/javascript" src="vendor.js"></script>
-  <script type="text/javascript" src="worker.js"></script>
+  <script type="text/javascript" src="boot_worker.js"></script>
 `;
 
 const browserScripts = `
-  <script type="text/javascript" src="boot_browser.js"></script>
+  <script type="text/javascript" src="run_browser.js"></script>
   <script type="text/javascript" src="vendor.js"></script>
-  <script type="text/javascript" src="browser.js"></script>
+  <script type="text/javascript" src="boot_browser.js"></script>
 `;
 
 
