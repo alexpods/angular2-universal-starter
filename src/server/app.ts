@@ -17,7 +17,7 @@ const providers = [
 
 const preboot = { 
   appRoot: 'app', 
-  freeze: false,
+  freeze: { name: 'spinner' },
   replay: 'rerender',
   buffer: true, 
   debug: true, 
