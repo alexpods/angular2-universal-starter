@@ -1,7 +1,7 @@
 {
   "name": "angular2-universal-starter",
   "script": "./dist/private/app.js",
-  "watch": true,
+  "watch": "./dist",
   "error_file": "./logs/errors.log",
   "out_file": "./logs/output.log",
   "env": {
