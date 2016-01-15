@@ -14,7 +14,7 @@ Enjoy Server Side rendering and Web Workers in your Angular2 Application
 
 - [Server Sider rendering](https://angularu.com/VideoSession/2015sf/angular-2-server-rendering) for instant page loading
 - Entire Angular2 application is running in a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) (UI always will be smooth)
-- [Preboot](https://www.npmjs.com/package/preboot) to catch browser events before Angular2 is ready to work (you can experement with its options [here](https://github.com/alexpods/angular2-universal-starter/blob/master/src/server/app.ts#L18))
+- [Preboot](https://www.npmjs.com/package/preboot) to catch browser events before Angular2 is ready to work (you can experement with its options [here](https://github.com/alexpods/angular2-universal-starter/blob/master/src/server/app.ts#L33))
 - [Express](http://expressjs.com/)
 - [Webpack](https://webpack.github.io/) and its awesome [Code Splitting](https://webpack.github.io/docs/code-splitting.html) feature which allows us to lazy load parts of an application.
 - [Typescript](http://www.typescriptlang.org/) with [Typings](https://github.com/typings/typings)
