@@ -1,4 +1,4 @@
-> Recently I've fixed peer dependencies. So, do `npm run reinstall` after `git pull`. You have to do it only one time.
+> Recently I've fixed peer dependencies. So, please, do `npm run reinstall` after `git pull`. You have to do it only once.
 
 # Angular2 Universal Starter Kit
 
