@@ -1,3 +1,5 @@
+> Recently I've fixed peer dependencies. So, do `npm run reinstall` after `git pull`. You have to do it only one time.
+
 # Angular2 Universal Starter Kit
 
 [![Build Status](https://travis-ci.org/alexpods/angular2-universal-starter.svg?branch=master)](https://travis-ci.org/alexpods/angular2-universal-starter)
