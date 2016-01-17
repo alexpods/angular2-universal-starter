@@ -9,6 +9,6 @@
   "env": {
     "PORT": 3000,
     "NG2_SS": true,
-    "NG2_WW": false
+    "NG2_WW": true
   }
 }
