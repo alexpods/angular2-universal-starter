@@ -1,65 +1,54 @@
-import * as path from 'path';
-import * as express from 'express';
 import * as serveStatic from 'serve-static';
-import * as universal from  'angular2-universal-preview';
+import * as express from 'express';
+import { Request, Response } from 'express';
 import { renderComponent } from './render';
-import { provide } from 'angular2/core';
-import { ROUTER_PROVIDERS, APP_BASE_HREF } from 'angular2/router';
 import { App } from '../app/app.ts';
+import { HAS_SS, HAS_WW, INDEX_HTML, PROVIDERS, PREBOOT, WORKER_SCRIPTS, BROWSER_SCRIPTS, PUBLIC_PATH } from './const';
 
-const { SERVER_LOCATION_PROVIDERS, BASE_URL } = <any>universal;
-
-const PUBLIC_PATH = path.resolve(__dirname, '../../dist/public');
-
-const hasSS = 'NG2_SS' in process.env ? process.env.NG2_SS === 'true' : true;
-const hasWW = 'NG2_WW' in process.env ? process.env.NG2_WW === 'true' : true;
-
-const indexHtml = require('../index.html');
-
-const workerScripts = `
-  <script type="text/javascript" src="run_worker.js"></script>
-  <script type="text/javascript" src="vendor.js"></script>
-  <script type="text/javascript" src="boot_worker.js"></script>
-`;
-
-const browserScripts = `
-  <script type="text/javascript" src="run_browser.js"></script>
-  <script type="text/javascript" src="vendor.js"></script>
-  <script type="text/javascript" src="boot_browser.js"></script>
-`;
-
-const app = express();
-
-const providers = [
-  ROUTER_PROVIDERS,
-  SERVER_LOCATION_PROVIDERS,
-  provide(BASE_URL, { useValue: '/' })
-];
-
-const preboot = { 
-  appRoot: 'app', 
-  freeze: { name: 'spinner' },
-  replay: 'rerender',
-  buffer: true, 
-  debug: true, 
-  uglify: false 
-};
+export const app = express();
 
 app.use(serveStatic(PUBLIC_PATH));
 
-app.get('/', (req, res, next) => {
-  Promise.resolve()
+/**
+ * Angular2 application
+ */
+app.get('/*', (req: Request, res: Response, next: Function) => {
+  return Promise.resolve()
     .then(() => {
-      return hasSS
-        ? renderComponent(indexHtml, App, providers, preboot)
-        : indexHtml
+      return HAS_SS
+        ? renderComponent(INDEX_HTML, App, PROVIDERS, PREBOOT)
+        : INDEX_HTML
     })
     .then((rawContent) => {
-      const scripts = hasWW ? workerScripts : browserScripts;
+      const scripts = HAS_WW ? WORKER_SCRIPTS : BROWSER_SCRIPTS;
       const content = rawContent.replace('</body>', scripts+ '</body>');
       return res.send(content);
     })
     .catch(err => next(err));
 });
 
-export { app }
+/**
+ * 404 Not Found
+ */
+app.use((req: Request, res: Response, next: Function) => {
+  const err: any = new Error('Not Found');
+  err.status = 404;
+  
+  return next(err);
+});
+
+/**
+ * Development error handler.
+ * Print error message with a stacktrace.
+ */
+app.use((err: any, req: Request, res: Response, next: Function) => {
+  const message: string = err.message;
+  const status:  number = err.status || 500;
+  const stack:   string = err.stack;
+  
+  return res.status(status).send(`
+    <h1>${message}<h1>
+    <h2>${status}</h2>
+    <pre>${stack}</pre>
+  `);
+});
