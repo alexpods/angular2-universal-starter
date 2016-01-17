@@ -11,8 +11,6 @@ describe('angular2-universal-starter application', function() {
     expect(button.getText()).toEqual('Check "Preboot"');
     expect(message.isPresent()).toBeFalsy();
     button.click();
-    expect(message.isPresent()).toBeFalsy();
-    
     browser.wait(function() { return message.isPresent() }, 5000);
   });
   
@@ -22,8 +20,6 @@ describe('angular2-universal-starter application', function() {
     
     expect(message.isPresent()).toBeFalsy();
     button.click();
-    expect(message.isPresent()).toBeFalsy();
-    
     browser.wait(function() { return message.isPresent() }, 5000);
   });
 });

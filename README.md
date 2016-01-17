@@ -50,7 +50,7 @@ npm restart
 ```
 
 ##Turning server side rendering and web workers on/off
-You can optionally turn server sider rendering or web web workers suport on/off. You just need
+You can optionally turn server sider rendering or web workers suport on/off. You just need
 to change `NG2_SS` and `NG2_WW` environment variables in `ecosystem.json` file:
 ```js
 {

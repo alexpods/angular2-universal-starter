@@ -2,31 +2,15 @@ declare var require: any;
 
 import { Component } from 'angular2/core';
 import { NgIf } from 'angular2/common';
+import { RouteConfig, RouterOutlet } from 'angular2/router';
+import { Home } from './home';
 
 @Component({
   selector: 'app',
-  directives: [NgIf],
-  template: require('./app.html'),
-  styles: [require('./app.css')]
+  directives: [RouterOutlet],
+  template: '<router-outlet></router-outlet>'
 })
-export class App {
-  name = 'World';
-  messagePreboot = '';
-  messageLazyLoading = '';
-
-  constructor() {
-    setTimeout(() => this.name = 'Angular', 1000);
-  }
-  
-  onCheckPreboot() {
-    console.log('Check preboot');
-    this.messagePreboot = "Preboot is working"
-  }
-  
-  onCheckLazyLoading() {
-    require.ensure([], () => {
-      const greeter = require('./greeter.ts');
-      this.messageLazyLoading = greeter.greet();;
-    });
-  }
-}
+@RouteConfig([
+  { path: '/', name: 'Home', component: Home }
+])
+export class App {}

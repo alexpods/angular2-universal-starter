@@ -1,9 +1,9 @@
 import { describe, it, expect, TestComponentBuilder, injectAsync, tick, fakeAsync } from 'angular2/testing';
-import { App } from './app.ts';
+import { Home } from './home';
 
-describe('App', () => {
+describe('Home', () => {
   it('should change name to "Angular" after 1s', injectAsync([TestComponentBuilder], fakeAsync((tcb) => {
-    return tcb.createAsync(App).then((fixture) => {
+    return tcb.createAsync(Home).then((fixture) => {
       const { componentInstance } = fixture;
       expect(componentInstance.name).toBe('World');
       tick(1000);
@@ -12,7 +12,7 @@ describe('App', () => {
   })));
   
   it('should set message on button click', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(App).then((fixture) => {
+    return tcb.createAsync(Home).then((fixture) => {
       const { componentInstance, nativeElement } = fixture;
       
       expect(componentInstance.messagePreboot).toBeFalsy();
@@ -22,7 +22,7 @@ describe('App', () => {
   }));
   
   it('should lazy load service', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.createAsync(App).then((fixture) => {
+    return tcb.createAsync(Home).then((fixture) => {
       const { componentInstance, nativeElement } = fixture;
       
       expect(componentInstance.messageLazyLoading).toBeFalsy();

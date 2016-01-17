@@ -1,4 +1,5 @@
 import { platform, provide } from 'angular2/core';
+import { WORKER_RENDER_APP_ROUTER } from './.worker/ui';
 import { 
   WebWorkerInstance, 
   WORKER_RENDER_APP, 
@@ -16,6 +17,7 @@ const workerScriptUrl = URL.createObjectURL(new Blob([`
 
 const appRef = platform(WORKER_RENDER_PLATFORM).application([
   WORKER_RENDER_APP,
+  WORKER_RENDER_APP_ROUTER,
   provide(WORKER_SCRIPT, { useValue: workerScriptUrl })
 ])
 

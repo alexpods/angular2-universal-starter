@@ -20,11 +20,15 @@ function bootstrapComponent(component, providers) {
     const injector = compRef.injector;
     const router = injector.getOptional(Router);
     
-    if (router) {
-      return Promise.resolve(router._currentNavigation).then(() => compRef);
-    }
-    
-    return compRef;
+    return Promise.resolve()
+      .then(() => {
+        return router
+          ? Promise.resolve(router._currentNavigation).then(() => compRef)
+          : compRef
+      })
+      .then(compRef => {
+        return new Promise(resolve => setTimeout(() => resolve(compRef), 0));
+      });
   });
 }
 
