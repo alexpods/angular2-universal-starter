@@ -76,8 +76,8 @@ const clientConfig = {
   },
   plugins: [
     new CommonsChunkPlugin({ name: 'vendor',  minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'run_browser', chunks: ['vendor', 'boot_browser'], minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'run_worker', chunks: ['vendor', 'boot_worker'], minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'run_browser',     chunks: ['vendor', 'boot_browser'], minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'run_worker',      chunks: ['vendor', 'boot_worker'], minChunks: Infinity }),
     new CommonsChunkPlugin({ name: 'run_worker_app',  chunks: ['vendor', 'boot_worker_app'], minChunks: Infinity }),
     replaceBootWorkerEnsure()
   ],
@@ -149,9 +149,11 @@ module.exports.serverConfig  = serverConfig;
 module.exports.testingConfig = testingConfig;
     
 /**
- * TODO: HACK!! Remove it when it becomes possible.
- * This is the way to share the same "vendor" amoung browser main thread and
- * web worker thread. I don't want to have two vendor chunks for each environment
+ * TODO: HACK!! Remove it when it's' possible.
+ * This is the way to share the same "vendor" chunk amoung browser main thread and
+ * web worker thread. I don't want to have two different vendor chunks for each environment.
+ * They whould be different only in a name of "webpack" callback: "webpackJsonp"" for main 
+ * thred and "webpackChunk" for web workers.
  */
 function replaceBootWorkerEnsure() {
   return{ 
@@ -160,19 +162,19 @@ function replaceBootWorkerEnsure() {
         const chunk = stats.compilation.namedChunks['run_worker'];
         const chunkPath = compiler.outputPath + '/' + chunk.files[0];
         
-        // sync doesn't hurt here, 'boot_worker' chunk will be compiled only once per watch
+        // sync doesn't hurt here, 'run_worker' chunk will be compiled only once per watch
         const content = fs.readFileSync(chunkPath, { encoding: 'utf8' });
         
         fs.writeFileSync(chunkPath, content.replace(
 /__webpack_require__\.e[\s\S]*?head.appendChild\(script\);[\s\/\*]*?\}[\s\/\*]*?\}/
 , `
 /******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
-/******/ 		// "1" is the signal for "already loaded"
-/******/ 		if(!installedChunks[chunkId]) {
-/******/      var origin = location.origin;
-/******/ 			importScripts(origin + "/" + chunkId + ".chunk.js");
+/******/ 		// "0" is the signal for "already loaded"
+/******/ 		if(installedChunks[chunkId] === 0) {
+/******/      return callback.call(null, __webpack_require__);
 /******/ 		}
-/******/ 		callback.call(null, __webpack_require__);
+/******/    installedChunks[chunkId] = [callback];
+/******/ 		importScripts(location.origin + "/" + chunkId + ".chunk.js");
 /******/ 	};
         `), { encoding: 'utf8' })
       })
