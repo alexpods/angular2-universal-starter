@@ -27,7 +27,7 @@ function bootstrapComponent(component, providers) {
           : compRef
       })
       .then(compRef => {
-        return new Promise(resolve => setTimeout(() => resolve(compRef), 0));
+        return new Promise(resolve => setTimeout(() => resolve(compRef)));
       });
   });
 }
