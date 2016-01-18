@@ -1,7 +1,8 @@
 import * as path from 'path';
 import * as universal from  'angular2-universal-preview';
 import { provide } from 'angular2/core';
-import { ROUTER_PROVIDERS, APP_BASE_HREF } from 'angular2/router';
+import { ROUTER_PROVIDERS, APP_BASE_HREF, PlatformLocation } from 'angular2/router';
+import { ServerPlatformLocation } from './.universal/router';
 
 const { SERVER_LOCATION_PROVIDERS, BASE_URL } = <any>universal;
 
@@ -30,8 +31,8 @@ export const BROWSER_SCRIPTS = `
 
 export const PROVIDERS = [
   ROUTER_PROVIDERS,
-  SERVER_LOCATION_PROVIDERS,
-  provide(BASE_URL, { useValue: '/' }),
+  provide(PlatformLocation, { useClass: ServerPlatformLocation }),
+  provide(APP_BASE_HREF, { useValue: '/' }),
 ];
 
 export const PREBOOT = { 

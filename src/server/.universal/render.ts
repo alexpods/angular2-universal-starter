@@ -1,7 +1,8 @@
 declare var zone: any;
 
-import { platform } from 'angular2/core';
+import { platform, Injector } from 'angular2/core';
 import { Router } from 'angular2/router';
+import { REQUEST_URL } from './router';
 import * as universal from 'angular2-universal-preview'
 
 const {
@@ -11,19 +12,22 @@ const {
   selectorResolver,
   selectorRegExpFactory,
   prebootConfigDefault,
-} = <any>universal;
+} = require('angular2-universal-preview');
 
-const preboot = require('preboot');
+const {
+  getClientCode
+} = require('preboot');
 
 function bootstrapComponent(component, providers) {
   return bootstrap(component, providers).then((compRef) => {
-    const injector = compRef.injector;
-    const router = injector.getOptional(Router);
+    const injector: Injector = compRef.injector;
+    const router: Router = injector.getOptional(Router);
+    const url: string = injector.get(REQUEST_URL);
     
     return Promise.resolve()
-      .then(() => router && router._currentNavigation)
+      .then(() => (<any>router)._currentNavigation)
       .then(() => new Promise(resolve => setTimeout(() => resolve(compRef))));
-  });
+  }); 
 }
 
 function serializeComponent(component, providers) {
@@ -42,7 +46,7 @@ function serializeComponentWithPreboot(component, providers, prebootOptions): Pr
     
     const options = prebootConfigDefault(prebootOptions);
     
-    return preboot.getClientCode(options).then(code => html + createPrebootHTML(code, options));
+    return getClientCode(options).then(code => html + createPrebootHTML(code, options));
   });
 }
 

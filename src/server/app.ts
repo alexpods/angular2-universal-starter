@@ -1,7 +1,9 @@
 import * as serveStatic from 'serve-static';
 import * as express from 'express';
+import { provide } from 'angular2/core';
 import { Request, Response } from 'express';
-import { renderComponent } from './render';
+import { REQUEST_URL } from './.universal/router';
+import { renderComponent } from './.universal/render';
 import { App } from '../app/app.ts';
 import { HAS_SS, HAS_WW, INDEX_HTML, PROVIDERS, PREBOOT, WORKER_SCRIPTS, BROWSER_SCRIPTS, PUBLIC_PATH } from './const';
 
@@ -15,16 +17,23 @@ app.use(serveStatic(PUBLIC_PATH));
 app.get('/*', (req: Request, res: Response, next: Function) => {
   return Promise.resolve()
     .then(() => {
-      return HAS_SS
-        ? renderComponent(INDEX_HTML, App, PROVIDERS, PREBOOT)
-        : INDEX_HTML
+      if (HAS_SS) {
+        const REQUEST_PROVIDERS = [
+          provide(REQUEST_URL,  { useValue: req.originalUrl })
+        ];
+
+        return renderComponent(INDEX_HTML, App, [PROVIDERS, REQUEST_PROVIDERS], PREBOOT);
+      }
+      
+      return INDEX_HTML;
     })
     .then((rawContent) => {
       const scripts = HAS_WW ? WORKER_SCRIPTS : BROWSER_SCRIPTS;
       const content = rawContent.replace('</body>', scripts+ '</body>');
+      
       return res.send(content);
     })
-    .catch(err => next(err));
+    .catch(error => next(error));
 });
 
 /**
@@ -42,9 +51,18 @@ app.use((req: Request, res: Response, next: Function) => {
  * Print error message with a stacktrace.
  */
 app.use((err: any, req: Request, res: Response, next: Function) => {
-  const message: string = err.message;
   const status:  number = err.status || 500;
-  const stack:   string = err.stack;
+
+  let stack: string;
+  let message: string;
+  
+  if (err.message.length < 100) {
+    message = err.message;
+    stack = err.stack;
+  } else {
+    message = 'Server Error';
+    stack = err.message + '\n\n' + err.stack;
+  }
   
   return res.status(status).send(`
     <h1>${message}<h1>
