@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "angular2": "2.0.0-beta.0",
-    "angular2-universal-preview": "^0.24.0",
+    "angular2-universal-preview": "0.30.1",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.34.1",
     "express": "^4.13.3",
