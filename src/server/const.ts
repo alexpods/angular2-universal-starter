@@ -5,13 +5,16 @@ import { ROUTER_PROVIDERS, APP_BASE_HREF } from 'angular2/router';
 
 const { SERVER_LOCATION_PROVIDERS, BASE_URL } = <any>universal;
 
+const ENV_NG2_SS = process.env._NG2_SS || process.env.NG2_SS || 'true';
+const ENV_NG2_WW = process.env._NG2_WW || process.env.NG2_WW || 'true';
+
 export const PORT = process.env.PORT || 3000;
 
 export const PUBLIC_PATH = path.resolve(__dirname, '../../dist/public');
 export const INDEX_HTML  = require('../index.html');
 
-export const HAS_SS = 'NG2_SS' in process.env ? process.env.NG2_SS === 'true' : true;
-export const HAS_WW = 'NG2_WW' in process.env ? process.env.NG2_WW === 'true' : true;
+export const HAS_SS = ENV_NG2_SS === 'true';
+export const HAS_WW = ENV_NG2_WW === 'true';
 
 export const WORKER_SCRIPTS = `
   <script type="text/javascript" src="run_worker.js"></script>

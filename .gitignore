@@ -3,3 +3,4 @@ dist
 logs
 typings
 npm-debug.log
+test.sh

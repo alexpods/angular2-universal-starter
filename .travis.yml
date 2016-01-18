@@ -21,5 +21,11 @@ before_script:
   
 script:
   - npm start
-  - npm run test
+  - npm test
+  - $(npm bin)/pm2 delete all; _NG2_WW=false _NG2_SS=true $(npm bin)/pm2 start ecosystem.json
+  - npm test
+  - $(npm bin)/pm2 delete all; _NG2_WW=false _NG2_SS=false $(npm bin)/pm2 start ecosystem.json
+  - npm test
+  - npm restart
+  - npm test
   - npm stop
