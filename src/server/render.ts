@@ -21,14 +21,8 @@ function bootstrapComponent(component, providers) {
     const router = injector.getOptional(Router);
     
     return Promise.resolve()
-      .then(() => {
-        return router
-          ? Promise.resolve(router._currentNavigation).then(() => compRef)
-          : compRef
-      })
-      .then(compRef => {
-        return new Promise(resolve => setTimeout(() => resolve(compRef)));
-      });
+      .then(() => router && router._currentNavigation)
+      .then(() => new Promise(resolve => setTimeout(() => resolve(compRef))));
   });
 }
 
