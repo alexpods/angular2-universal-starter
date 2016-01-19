@@ -1,4 +1,4 @@
-import { parse as parseUrl, Url } from 'url';
+import { parse, Url } from 'url';
 import { Injectable, Inject } from 'angular2/core';
 import { PlatformLocation } from 'angular2/router';
 
@@ -10,7 +10,7 @@ export class ServerPlatformLocation extends PlatformLocation {
   
   constructor(@Inject(REQUEST_URL) requestUrl: string) {
     super();
-    this._url = parseUrl(requestUrl);
+    this._url = parse(requestUrl);
   }
   
   get pathname(): string {
@@ -42,7 +42,7 @@ export class ServerPlatformLocation extends PlatformLocation {
   public pushState(state: any, title: string, url: string): void {}
   public replaceState(state: any, title: string, url: string): void {}
   public forward(): void {}
-  public ack(): void {}
+  public back(): void {}
   
   /**
    * Need to prevent original implementation
