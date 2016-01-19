@@ -21,13 +21,13 @@ before_script:
   
 script:
   - npm start
-  - npm run test:unit
+  - npm run unit
   - $(npm bin)/pm2 delete ecosystem.json; _NG2_WW=true  _NG2_SS=true  $(npm bin)/pm2 start ecosystem.json
-  - npm run test:e2e
+  - npm run e2e
   - $(npm bin)/pm2 delete ecosystem.json; _NG2_WW=false _NG2_SS=true  $(npm bin)/pm2 start ecosystem.json
-  - npm run test:e2e
+  - npm run e2e
   - $(npm bin)/pm2 delete ecosystem.json; _NG2_WW=false _NG2_SS=false $(npm bin)/pm2 start ecosystem.json
-  - npm run test:e2e
+  - npm run e2e
   - npm restart
   - npm test
   - npm stop

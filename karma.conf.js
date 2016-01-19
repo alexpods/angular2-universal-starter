@@ -1,6 +1,14 @@
-// Karma configuration
-// Generated on Mon Jan 11 2016 12:07:37 GMT+0300 (MSK)
+const path = require('path');
 const webpackConfig = require('./webpack.config.js').testingConfig;
+
+function getTestPath(args) {
+  for (var i = 0; i < args.length; ++i) {
+    if (args[i] === '--path--') {
+      return path.relative(__dirname, args[i+1] || '');
+    }
+  }
+  return '';
+}
 
 module.exports = function(config) {
   config.set({
@@ -23,6 +31,14 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [
     ],
+    
+    client: {
+      args: [{
+        testPath: getTestPath(process.argv)
+      }],
+      // other client-side config
+      captureConsole: true
+    },
 
 
     // preprocess matching files before serving them to the browser

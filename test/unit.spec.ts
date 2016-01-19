@@ -1,4 +1,5 @@
 declare var require: any;
+declare var __karma__: any;
 
 import 'phantomjs-polyfill';
 import 'es6-shim';
@@ -10,8 +11,20 @@ import 'zone.js/dist/jasmine-patch.js';
 import 'angular2/core';
 import 'angular2/testing';
 
+const args = __karma__.config.args;
+const opts = args[0];
+
 const testsContext = require.context('../src', true, /\.spec\.ts/);
-testsContext.keys().forEach(testsContext);
+
+var modules = testsContext.keys();
+var testPath = opts.testPath;
+
+if (testPath) {
+  testPath = testPath.slice(4);
+  modules = modules.filter(modulePath => modulePath.startsWith('./' + testPath));
+}
+
+modules.forEach(testsContext);
 
 const domAdapter = require('angular2/src/platform/browser/browser_adapter');
 domAdapter.BrowserDomAdapter.makeCurrent();

@@ -86,10 +86,16 @@ npm test
 ##Unit Testing
 ```bash
 # run unit tests (single run)
-npm run test:unit
+npm run unit
 
 # run unit tests and start watch for changes
-npm run test:unit:watch
+npm run unit:watch
+
+# run unit tests for specified directory (path must be relative to root directory)
+npm run unit src/app
+
+# run unit tests for specified file (path must be relative to root directory)
+npm run unit src/app/home.spec.ts
 ```
 
 ##End-to-End Testing
@@ -99,7 +105,7 @@ For end-to-end tests you nedd to start Selenium Server (webdriver) first.
 npm run webdriver:start
 
 # run ent-to-end test (single run)
-npm run test:e2e
+npm run e2e
 ```
 
 #Cleaning
