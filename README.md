@@ -92,10 +92,11 @@ npm run unit
 npm run unit:watch
 
 # run unit tests for specified directory (path must be relative to root directory)
+# currentyl you can specify paths only for "src" directory
 npm run unit src/app
 
-# run unit tests for specified file (path must be relative to root directory)
-npm run unit src/app/home.spec.ts
+# run unit tests for specified file and start watch for changes
+npm run unit:watch src/app/home.spec.ts
 ```
 
 ##End-to-End Testing

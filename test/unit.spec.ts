@@ -20,8 +20,8 @@ var modules = testsContext.keys();
 var testPath = opts.testPath;
 
 if (testPath) {
-  testPath = testPath.slice(4);
-  modules = modules.filter(modulePath => modulePath.startsWith('./' + testPath));
+  testPath = './' + testPath.slice(4);
+  modules = modules.filter(modulePath => modulePath.startsWith(testPath));
 }
 
 modules.forEach(testsContext);
