@@ -48,6 +48,8 @@ module.exports = function(config) {
     },
     
     webpack: webpackConfig,
+
+    webpackMiddleware: webpackConfig.devServer,
     
     // test results reporter to use
     // possible values: 'dots', 'progress'

@@ -124,7 +124,6 @@ const serverConfig = {
 };
 
 const testingConfig = {
-  devtool: 'inline-source-map',
   resolve: {
     extensions: ['', '.ts', '.js']
   },
@@ -136,9 +135,9 @@ const testingConfig = {
       loaders.json()
     ]
   },
-  stats: { 
-    colors: true, 
-    reasons: true 
+  devServer: {
+    quiet: true,
+    noInfo: true,
   }
 }
 
