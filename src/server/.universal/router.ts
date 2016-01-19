@@ -24,6 +24,12 @@ export class ServerPlatformLocation extends PlatformLocation {
   get search(): string {
     return this._url.search || '';
   }
+  
+  get hash(): string {
+    // Although we don't have hashes on a server side, but maybe it will be usefull 
+    // in the future for some sort of crazy hacks.
+    return this._url.hash || '';
+  }
 
   public getBaseHrefFromDOM(): string {
     throw new Error(`
