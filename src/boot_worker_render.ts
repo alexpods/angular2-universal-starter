@@ -25,7 +25,8 @@ const worker = appRef.injector.get(WebWorkerInstance).worker;
 
 worker.addEventListener('message', function onAppReady(event) {
   if (event.data === 'APP_READY') {
-    setTimeout(() => document.dispatchEvent(new Event('BootstrapComplete')));
     worker.removeEventListener('message', onAppReady, false);
+    URL.revokeObjectURL(workerScriptUrl);
+    setTimeout(() => document.dispatchEvent(new Event('BootstrapComplete')));
   }
 }, false);
