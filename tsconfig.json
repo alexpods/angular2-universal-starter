@@ -2,8 +2,9 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": false,
+    "removeComments": true,
     "noEmitHelpers": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true

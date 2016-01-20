@@ -1,139 +1,101 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
+const constants = require('./constants');
+
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 
-const ROOT_DIR    = path.resolve(__dirname);
-const SRC_DIR     = path.resolve(ROOT_DIR, 'src');
-const DIST_DIR    = path.resolve(ROOT_DIR, 'dist');
-const PUBLIC_DIR  = path.resolve(DIST_DIR, 'public');
-const PRIVATE_DIR = path.resolve(DIST_DIR, 'private');
+const SRC_DIR     = constants.SRC_DIR;
+const PUBLIC_DIR  = constants.PUBLIC_DIR;
+const PRIVATE_DIR = constants.PRIVATE_DIR;
+const SERVER_DIR  = constants.SERVER_DIR;
 
-function merge(obj1, obj2) {
-  obj1 = obj1 || {};
-  obj2 = obj2 || {};
-  for (var prop in obj2) obj1[prop] = obj2[prop];
-  return obj1;
-}
+const SERVER_APP_NAME = constants.SERVER_APP_NAME;
 
-const nodeModules = fs.readdirSync('./node_modules').filter(function(name) {
-  return name != '.bin';
-});
+const NODE_MODULES = constants.NODE_MODULES;
 
-const loaders = {
-  ts: function(opts) {
-    return {
-      test: /\.ts$/,
-      loader: 'ts',
-      query: merge({
-        'ignoreDiagnostics': [
-          2403, // 2403 -> Subsequent variable declarations
-          2300, // 2300 -> Duplicate identifier
-          2374, // 2374 -> Duplicate number index signature
-          2375, // 2375 -> Duplicate string index signature,
-          2307  // 2307 -> Cannot find module './App.html'. (.html and .css extensions)
-        ]
-      }, opts && opts.query),
-      exclude: [
-        /node_modules/
-      ]
-    };    
+const LOADERS = [{
+  test: /\.ts$/,
+  loader: 'ts',
+  query: {
+    ignoreDiagnostics: [
+      2403, // 2403 -> Subsequent variable declarations
+      2300, // 2300 -> Duplicate identifier
+      2374, // 2374 -> Duplicate number index signature
+      2375, // 2375 -> Duplicate string index signature,
+      2307,  // 2307 -> Cannot find module './App.html'. (.html and .css extensions)
+    ]
   },
-  html: function() {
-    return {
-      test: /\.html$/,
-      loader: 'raw'
-    };
-  },
-  css: function() {
-    return {
-      test: /\.css$/,
-      loader: 'raw'
-    };
-  },
-  json: function() {
-    return {
-      test: /\.json$/,
-      loader: 'json'
-    };
-  }
-}
+  exclude: [
+    /node_modules/
+  ]
+}, {
+  test: /\.html$/,
+  loader: 'raw'
+}, {
+  test: /\.css$/,
+  loader: 'raw'
+}, {
+  test: /\.json$/,
+  loader: 'json'
+}];
 
-const clientConfig = {
-  devtool: 'inline-source-map',
+const CLIENT_CONFIG = {
   target: 'web',
   entry: {
-    boot_browser: path.resolve(SRC_DIR, 'boot_browser.ts'),
-    boot_worker: path.resolve(SRC_DIR, 'boot_worker_render.ts'),
+    boot_browser:    path.resolve(SRC_DIR, 'boot_browser.ts'),
+    boot_worker:     path.resolve(SRC_DIR, 'boot_worker_render.ts'),
     boot_worker_app: path.resolve(SRC_DIR, 'boot_worker_app.ts'),
-    vendor: path.resolve(SRC_DIR, 'vendor.ts'),
+    vendor:          path.resolve(SRC_DIR, 'vendor.ts'),
   },
   output: {
     path: PUBLIC_DIR,
     filename: '[name].js',
-    // if you're changing this field, don't forget to synchronize it with "replaceBootWorkerEnsure()"
+    // if you're changing this field, don't forget to synchronize it with "WorkWithWorkersPlugin"
     chunkFilename: "[id].chunk.js" 
   },
   plugins: [
     new CommonsChunkPlugin({ name: 'vendor',  minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'run_browser',     chunks: ['vendor', 'boot_browser'], minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'run_worker',      chunks: ['vendor', 'boot_worker'], minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'run_browser',     chunks: ['vendor', 'boot_browser'],    minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'run_worker',      chunks: ['vendor', 'boot_worker'],     minChunks: Infinity }),
     new CommonsChunkPlugin({ name: 'run_worker_app',  chunks: ['vendor', 'boot_worker_app'], minChunks: Infinity }),
-    replaceBootWorkerEnsure()
+    WorkWithWorkersPlugin()
   ],
   resolve: {
     extensions: ['', '.ts', '.js']
   },
   module: {
-    loaders: [
-      loaders.ts(),
-      loaders.html(),
-      loaders.css(),
-      loaders.json()
-    ]
+    loaders: LOADERS
   }
 };
 
-const serverConfig = {
+const SERVER_CONFIG = {
   target: 'node',
-  entry: {
-    app: path.resolve(SRC_DIR, 'server/boot.ts')
-  },
+  entry: path.resolve(SERVER_DIR, 'app.ts'),
   output: {
     path: PRIVATE_DIR,
-    filename: '[name].js',
+    filename: SERVER_APP_NAME,
     libraryTarget: 'commonjs2'
   },
   resolve: {
     extensions: ['', '.ts', '.js']
   },
-  externals: [
-    nodeModules.map(function(name) { return new RegExp('^' + name) })
-  ],
+  externals: NODE_MODULES.map(function(name) { return new RegExp('^' + name) }),
   node: {
-    __dirname: true
+    __dirname: true,
+    __filename: true
   },
   module: {
-    loaders: [
-      loaders.ts(),
-      loaders.html(),
-      loaders.css(),
-      loaders.json()
-    ]
+    loaders: LOADERS
   }
 };
 
-const testingConfig = {
+const TESTING_CONFIG = {
   resolve: {
     extensions: ['', '.ts', '.js']
   },
   module: {
-    loaders: [
-      loaders.ts({ query: { transpileOnly: true } }),
-      loaders.html(),
-      loaders.css(),
-      loaders.json()
-    ]
+    loaders: LOADERS
   },
   devServer: {
     quiet: true,
@@ -141,11 +103,11 @@ const testingConfig = {
   }
 }
 
-module.exports = [clientConfig, serverConfig];
+exports = module.exports = [CLIENT_CONFIG, SERVER_CONFIG];
 
-module.exports.clientConfig  = clientConfig;
-module.exports.serverConfig  = serverConfig;
-module.exports.testingConfig = testingConfig;
+exports.CLIENT_CONFIG  = CLIENT_CONFIG;
+exports.SERVER_CONFIG  = SERVER_CONFIG;
+exports.TESTING_CONFIG = TESTING_CONFIG;
     
 /**
  * TODO: HACK!! Remove it when it's' possible.
@@ -153,20 +115,29 @@ module.exports.testingConfig = testingConfig;
  * web worker thread. I don't want to have two different vendor chunks for each environment.
  * They whould be different only in a name of "webpack" callback: "webpackJsonp"" for main 
  * thred and "webpackChunk" for web workers.
+ * Sync doesn't hurt here, 'run_worker_app' chunk will be compiled only once per watch.
  */
-function replaceBootWorkerEnsure() {
-  return{ 
+function WorkWithWorkersPlugin() {
+  return { 
     apply(compiler) {
       compiler.plugin('done', function(stats) {
-        const chunk = stats.compilation.namedChunks['run_worker_app'];
-        const chunkPath = compiler.outputPath + '/' + chunk.files[0];
+        var fileSystem = compiler.outputFileSystem;
         
-        // sync doesn't hurt here, 'run_worker_app' chunk will be compiled only once per watch
-        const content = fs.readFileSync(chunkPath, { encoding: 'utf8' });
+        // TODO: Need to think about a better way to do it
+        if (!fileSystem.readFileSync) {
+          fileSystem = fs;
+        }
         
-        fs.writeFileSync(chunkPath, content.replace(
+        const workerChunk = stats.compilation.namedChunks['run_worker_app'];
+        const vendorChunk = stats.compilation.namedChunks['vendor'];
+        
+        if (workerChunk) {
+          const workerChunkPath = compiler.outputPath + '/' + workerChunk.files[0];
+          const workerContent = fileSystem.readFileSync(workerChunkPath, 'utf8');
+          
+          fileSystem.writeFileSync(workerChunkPath, workerContent.replace(
 /__webpack_require__\.e[\s\S]*?head.appendChild\(script\);[\s\/\*]*?\}[\s\/\*]*?\}/
-, `
+, `  
 /******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
 /******/ 		// "0" is the signal for "already loaded"
 /******/ 		if(installedChunks[chunkId] === 0) {
@@ -175,7 +146,18 @@ function replaceBootWorkerEnsure() {
 /******/    installedChunks[chunkId] = [callback];
 /******/ 		importScripts(location.origin + "/" + chunkId + ".chunk.js");
 /******/ 	};
-        `), { encoding: 'utf8' })
+        `), { encoding: 'utf8' });
+        }
+        
+        if (vendorChunk) {
+          const vendorChunkPath = compiler.outputPath + '/' + vendorChunk.files[0];
+          const vendorContent = fileSystem.readFileSync(vendorChunkPath, 'utf8');
+          
+          fileSystem.writeFileSync(vendorChunkPath, vendorContent.replace(
+            'document.getElementsByTagName("script")' ,
+            'typeof document !== "undefined" ? $& : [{ getAttribute: function() { return "" } }]' 
+          ), { encoding: 'utf8' });
+        }
       })
     }
   };

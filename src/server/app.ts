@@ -1,20 +1,45 @@
+import 'reflect-metadata';
+import 'zone.js/dist/zone-microtask';
+import 'zone.js/dist/long-stack-trace-zone';
+
 import * as serveStatic from 'serve-static';
 import * as express from 'express';
 import { provide } from 'angular2/core';
+import { PlatformLocation, APP_BASE_HREF, ROUTER_PROVIDERS } from 'angular2/router';
 import { Request, Response } from 'express';
-import { REQUEST_URL } from './.universal/router';
+import { REQUEST_URL, ServerPlatformLocation } from './.universal/router';
 import { renderComponent } from './.universal/render';
 import { App } from '../app/app.ts';
-import { HAS_SS, HAS_WW, INDEX_HTML, PROVIDERS, PREBOOT, WORKER_SCRIPTS, BROWSER_SCRIPTS, PUBLIC_PATH } from './const';
+
+// TODO: make "constants" to be an external dependency
+import { PUBLIC_DIR, HAS_SS, HAS_WW, PREBOOT, WORKER_SCRIPTS, BROWSER_SCRIPTS } from '../../constants';
+
+function reduceScripts(content, src) {
+  return content + '<script type="text/javascript" src="' + src + '"></script>';
+}
+
+const INDEX_HTML_FILE = require('../index.html');
+
+const WORKER_SCRIPTS_HTML  = WORKER_SCRIPTS.reduce(reduceScripts, '');
+const BROWSER_SCRIPTS_HTML = BROWSER_SCRIPTS.reduce(reduceScripts, '');
+
+const PROVIDERS = [
+  ROUTER_PROVIDERS,
+  provide(PlatformLocation, { useClass: ServerPlatformLocation }),
+  provide(APP_BASE_HREF, { useValue: '/' }),
+];
+
 
 export const app = express();
 
-app.use(serveStatic(PUBLIC_PATH));
+app.use(serveStatic(PUBLIC_DIR));
 
 /**
  * Angular2 application
  */
 app.get('/*', (req: Request, res: Response, next: Function) => {
+  console.log('REQUEST', req.baseUrl, req.originalUrl);
+  
   return Promise.resolve()
     .then(() => {
       if (HAS_SS) {
@@ -22,13 +47,13 @@ app.get('/*', (req: Request, res: Response, next: Function) => {
           provide(REQUEST_URL,  { useValue: req.originalUrl })
         ];
 
-        return renderComponent(INDEX_HTML, App, [PROVIDERS, REQUEST_PROVIDERS], PREBOOT);
+        return renderComponent(INDEX_HTML_FILE, App, [PROVIDERS, REQUEST_PROVIDERS], PREBOOT);
       }
       
-      return INDEX_HTML;
+      return INDEX_HTML_FILE;
     })
     .then((rawContent) => {
-      const scripts = HAS_WW ? WORKER_SCRIPTS : BROWSER_SCRIPTS;
+      const scripts = HAS_WW ? WORKER_SCRIPTS_HTML : BROWSER_SCRIPTS_HTML;
       const content = rawContent.replace('</body>', scripts+ '</body>');
       
       return res.send(content);
@@ -47,26 +72,43 @@ app.use((req: Request, res: Response, next: Function) => {
 });
 
 /**
- * Development error handler.
- * Print error message with a stacktrace.
+ * Errors normalization
  */
 app.use((err: any, req: Request, res: Response, next: Function) => {
-  const status:  number = err.status || 500;
+    const status = err.staus || 500;
+    
+    let stack: string = err.message;
+    let message: string = err.stack;
+    
+    if (message.length > 100) {
+      stack = message + (stack ? ('\n\n' + stack) : '');
+      message = 'Server Error';
+    }
+    
+    return next({ status, message, stack });
+});
 
-  let stack: string;
-  let message: string;
+if (app.get('env') === 'development') {
   
-  if (err.message.length < 100) {
-    message = err.message;
-    stack = err.stack;
-  } else {
-    message = 'Server Error';
-    stack = err.message + '\n\n' + err.stack;
-  }
-  
-  return res.status(status).send(`
-    <h1>${message}<h1>
-    <h2>${status}</h2>
-    <pre>${stack}</pre>
-  `);
+  /**
+   * Development error handler.
+   * Print error message with a stacktrace.
+   */
+  app.use((err: any, req: Request, res: Response, next: Function) => {
+    return res.status(err.status).send(`
+      <h1>${err.message}<h1>
+      <h2>${err.status}</h2>
+      <pre>${err.stack}</pre>
+    `);
+  });  
+}
+
+/**
+ * Prodaction error handler.
+ */
+app.use((err: any, req: Request, res: Response, next: Function) => {
+  return res.status(err.status).send(`
+    <h1>${err.message}</h1>
+    <h2>${err.status}</h2>
+  `)
 });

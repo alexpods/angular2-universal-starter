@@ -1,5 +1,7 @@
 const path = require('path');
-const webpackConfig = require('./webpack.config.js').testingConfig;
+const webpackConfig = require('./webpack.config.js');
+
+const WEBPACK_TESTING_CONFIG = webpackConfig.TESTING_CONFIG;
 
 function getTestPath(args) {
   for (var i = 0; i < args.length; ++i) {
@@ -47,9 +49,9 @@ module.exports = function(config) {
       'test/unit.spec.ts': ['webpack', 'sourcemap']
     },
     
-    webpack: webpackConfig,
+    webpack: WEBPACK_TESTING_CONFIG,
 
-    webpackMiddleware: webpackConfig.devServer,
+    webpackMiddleware: WEBPACK_TESTING_CONFIG['devServer'],
     
     // test results reporter to use
     // possible values: 'dots', 'progress'

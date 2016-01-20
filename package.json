@@ -21,6 +21,7 @@
     "start": "pm2 start ecosystem.json",
     "restart": "npm stop && npm start",
     "stop": "pm2 delete ecosystem.json",
+    "dev": "node tools/boot_dev.js",
     "test": "npm run unit && npm run e2e",
     "status": "pm2 show $(node -e \"console.log(require('./ecosystem.json').name)\")",
     "logs": "pm2 logs $(node -e \"console.log(require('./ecosystem.json').name)\")",
@@ -70,6 +71,6 @@
     "typescript": "^1.7.5",
     "typings": "^0.6.2",
     "webpack": "^1.12.10",
-    "webpack-dev-middleware": "^1.4.0"
+    "webpack-dev-server": "^1.14.1"
   }
 }
