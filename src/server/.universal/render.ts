@@ -22,10 +22,9 @@ function bootstrapComponent(component, providers) {
   return bootstrap(component, providers).then((compRef) => {
     const injector: Injector = compRef.injector;
     const router: Router = injector.getOptional(Router);
-    const url: string = injector.get(REQUEST_URL);
     
     return Promise.resolve()
-      .then(() => (<any>router)._currentNavigation)
+      .then(() => router && (<any>router)._currentNavigation)
       .then(() => new Promise(resolve => setTimeout(() => resolve(compRef))));
   }); 
 }

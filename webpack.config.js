@@ -158,10 +158,10 @@ function replaceBootWorkerEnsure() {
   return{ 
     apply(compiler) {
       compiler.plugin('done', function(stats) {
-        const chunk = stats.compilation.namedChunks['run_worker'];
+        const chunk = stats.compilation.namedChunks['run_worker_app'];
         const chunkPath = compiler.outputPath + '/' + chunk.files[0];
         
-        // sync doesn't hurt here, 'run_worker' chunk will be compiled only once per watch
+        // sync doesn't hurt here, 'run_worker_app' chunk will be compiled only once per watch
         const content = fs.readFileSync(chunkPath, { encoding: 'utf8' });
         
         fs.writeFileSync(chunkPath, content.replace(

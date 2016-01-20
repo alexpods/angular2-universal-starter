@@ -1,7 +1,6 @@
 import { Injectable } from 'angular2/core';
 import { Serializer } from 'angular2/src/web_workers/shared/serializer';
-import { RenderProtoViewRefStore } from 'angular2/src/web_workers/shared/render_proto_view_ref_store';
-import { RenderViewWithFragmentsStore } from 'angular2/src/web_workers/shared/render_view_with_fragments_store';
+import {RenderStore} from 'angular2/src/web_workers/shared/render_store';
 
 export const ROUTER_CHANNEL = "ng-Router";
 
@@ -22,8 +21,8 @@ export class LocationType {
 @Injectable()
 export class LocationSerializer extends Serializer {
   
-  constructor(protoViewStore: RenderProtoViewRefStore, renderViewStore: RenderViewWithFragmentsStore) {
-    super(protoViewStore, renderViewStore);
+  constructor(renderStore: RenderStore) {
+    super(renderStore);
   }
   
   serialize(obj: any, type: any) {
