@@ -1,5 +1,5 @@
 import { Component } from 'angular2/core';
-import { RouteConfig, RouterOutlet } from 'angular2/router';
+import { RouteConfig, RouterOutlet, Location } from 'angular2/router';
 import { Home } from './home';
 import { Workers } from './workers';
 
@@ -12,4 +12,9 @@ import { Workers } from './workers';
   { path: '/home',    name: 'Home',   component: Home, useAsDefault: true },
   { path: '/workers',  name: 'Workers', component: Workers }
 ])
-export class App {}
+export class App {
+  
+  constructor(location: Location) {
+    location.go('/workers');
+  }
+}

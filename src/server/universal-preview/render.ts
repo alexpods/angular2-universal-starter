@@ -7,12 +7,18 @@ import * as universal from 'angular2-universal-preview'
 
 const {
   bootstrap,
-  appRefSyncRender,
   createPrebootHTML,
-  selectorResolver,
-  selectorRegExpFactory,
   prebootConfigDefault,
 } = require('angular2-universal-preview');
+
+const {
+  selectorResolver,
+  appRefSyncRender
+} = require('angular2-universal-preview/dist/server/src/render');
+
+const {
+  selectorRegExpFactory
+} = require('angular2-universal-preview/dist/server/src/helper');
 
 const {
   getClientCode

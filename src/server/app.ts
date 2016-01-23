@@ -1,11 +1,18 @@
 import * as serveStatic from 'serve-static';
 import * as express from 'express';
-import { provide } from 'angular2/core';
 import { Request, Response } from 'express';
-import { REQUEST_URL } from './.universal/router';
-import { renderComponent } from './.universal/render';
+import { provide } from 'angular2/core';
+import { ROUTER_PROVIDERS, APP_BASE_HREF, PlatformLocation } from 'angular2/router';
+import { REQUEST_URL, ServerPlatformLocation } from './universal-preview/server_platform_location';
+import { renderComponent } from './universal-preview/render';
 import { App } from '../app/app.ts';
-import { HAS_SS, HAS_WW, INDEX_HTML, PROVIDERS, PREBOOT, WORKER_SCRIPTS, BROWSER_SCRIPTS, PUBLIC_PATH } from './const';
+import { HAS_SS, HAS_WW, INDEX_HTML, PREBOOT, WORKER_SCRIPTS, BROWSER_SCRIPTS, PUBLIC_PATH } from './const';
+
+const PROVIDERS = [
+  ROUTER_PROVIDERS,
+  provide(PlatformLocation, { useClass: ServerPlatformLocation }),
+  provide(APP_BASE_HREF, { useValue: '/' }),
+];
 
 export const app = express();
 
