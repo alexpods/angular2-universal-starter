@@ -2,14 +2,20 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "sourceMap": false,
+    "sourceMap": true,
     "declaration": false,
     "removeComments": true,
     "noEmitHelpers": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "exclude": [
-    "node_modules"
+  "files": [
+    "src/vendor.ts",
+    "src/boot_browser.ts",
+    "src/boot_worker_app.ts",
+    "src/boot_worker_render.ts",
+    "src/server/app.ts",
+    "typings/main.d.ts",
+    "test/unit.spec.ts"
   ]
 }

@@ -1,5 +1,4 @@
 const http = require('http');
-const path = require('path');
 const constants = require('../constants');
 
 const HOST = constants.HOST;

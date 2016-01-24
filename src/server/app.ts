@@ -12,7 +12,7 @@ import { renderComponent } from './.universal/render';
 import { App } from '../app/app.ts';
 
 // TODO: make "constants" to be an external dependency
-import { PUBLIC_DIR, HAS_SS, HAS_WW, PREBOOT, WORKER_SCRIPTS, BROWSER_SCRIPTS } from '../../constants';
+const { PUBLIC_DIR, HAS_SS, HAS_WW, PREBOOT, WORKER_SCRIPTS, BROWSER_SCRIPTS } = require('../../constants.js');
 
 function reduceScripts(content, src) {
   return content + '<script type="text/javascript" src="' + src + '"></script>';
@@ -29,7 +29,6 @@ const PROVIDERS = [
   provide(APP_BASE_HREF, { useValue: '/' }),
 ];
 
-
 export const app = express();
 
 app.use(serveStatic(PUBLIC_DIR));
@@ -38,8 +37,6 @@ app.use(serveStatic(PUBLIC_DIR));
  * Angular2 application
  */
 app.get('/*', (req: Request, res: Response, next: Function) => {
-  console.log('REQUEST', req.baseUrl, req.originalUrl);
-  
   return Promise.resolve()
     .then(() => {
       if (HAS_SS) {
@@ -75,40 +72,28 @@ app.use((req: Request, res: Response, next: Function) => {
  * Errors normalization
  */
 app.use((err: any, req: Request, res: Response, next: Function) => {
-    const status = err.staus || 500;
-    
-    let stack: string = err.message;
-    let message: string = err.stack;
-    
-    if (message.length > 100) {
-      stack = message + (stack ? ('\n\n' + stack) : '');
-      message = 'Server Error';
-    }
-    
-    return next({ status, message, stack });
+  const status = err.staus || 500;
+  
+  let stack: string = err.message;
+  let message: string = err.stack;
+  
+  if (message.length > 100) {
+    stack = message + (stack ? ('\n\n' + stack) : '');
+    message = 'Server Error';
+  }
+  
+  return next({ status, message, stack });
 });
 
-if (app.get('env') === 'development') {
-  
-  /**
-   * Development error handler.
-   * Print error message with a stacktrace.
-   */
-  app.use((err: any, req: Request, res: Response, next: Function) => {
-    return res.status(err.status).send(`
-      <h1>${err.message}<h1>
-      <h2>${err.status}</h2>
-      <pre>${err.stack}</pre>
-    `);
-  });  
-}
-
 /**
- * Prodaction error handler.
+ * Development error handler.
+ * Print error message with a stacktrace.
  */
 app.use((err: any, req: Request, res: Response, next: Function) => {
   return res.status(err.status).send(`
-    <h1>${err.message}</h1>
+    <h1>${err.message}<h1>
     <h2>${err.status}</h2>
-  `)
-});
+    <pre>${err.stack}</pre>
+  `);
+}); 
+ 

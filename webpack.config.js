@@ -22,8 +22,7 @@ const LOADERS = [{
       2403, // 2403 -> Subsequent variable declarations
       2300, // 2300 -> Duplicate identifier
       2374, // 2374 -> Duplicate number index signature
-      2375, // 2375 -> Duplicate string index signature,
-      2307,  // 2307 -> Cannot find module './App.html'. (.html and .css extensions)
+      2375, // 2375 -> Duplicate string index signature
     ]
   },
   exclude: [
@@ -41,6 +40,8 @@ const LOADERS = [{
 }];
 
 const CLIENT_CONFIG = {
+  context: SRC_DIR,
+  devtool: 'source-map',
   target: 'web',
   entry: {
     boot_browser:    path.resolve(SRC_DIR, 'boot_browser.ts'),
@@ -71,6 +72,7 @@ const CLIENT_CONFIG = {
 
 const SERVER_CONFIG = {
   target: 'node',
+  devtool: 'source-map',
   entry: path.resolve(SERVER_DIR, 'app.ts'),
   output: {
     path: PRIVATE_DIR,
@@ -101,13 +103,41 @@ const TESTING_CONFIG = {
     quiet: true,
     noInfo: true,
   }
-}
+};
+
+const DEV_CONFIG = { 
+  progress: true,
+  contentBase: false, 
+  queit: false, 
+  noInfo: false,
+  stats: {
+    colors:  true,
+    hash:    true,
+    version: false,
+    timings: true,
+    assets:  true,
+    chunks:  false,
+    chunkModules: true,
+    children: true,
+    modules: false, 
+    cached: true,
+    reasons: true,
+    errorDetails: true,
+    chunkOrigins: true,    
+    modulesSort: true,
+    chunksSort: true,
+    assetsSort: true,
+    context: false,
+    source: true
+  }
+};
 
 exports = module.exports = [CLIENT_CONFIG, SERVER_CONFIG];
 
 exports.CLIENT_CONFIG  = CLIENT_CONFIG;
 exports.SERVER_CONFIG  = SERVER_CONFIG;
 exports.TESTING_CONFIG = TESTING_CONFIG;
+exports.DEV_CONFIG     = DEV_CONFIG;
     
 /**
  * TODO: HACK!! Remove it when it's' possible.

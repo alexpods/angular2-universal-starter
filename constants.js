@@ -15,9 +15,9 @@ exports.SERVER_DIR  = path.resolve(exports.SRC_DIR, 'server');
 exports.HOST = process.env.HOST || 'localhost';
 exports.PORT = process.env.PORT || 3000;
 
-
 exports.SERVER_APP_NAME = 'app.js';
-exports.SERVER_APP_PATH = path.resolve(exports.PRIVATE_DIR, exports.SERVER_APP_NAME);
+exports.SERVER_APP_DIR  = exports.PRIVATE_DIR;
+exports.SERVER_APP_PATH = path.resolve(exports.SERVER_APP_DIR, exports.SERVER_APP_NAME);
 
 exports.HAS_SS = ENV_NG2_SS === 'true';
 exports.HAS_WW = ENV_NG2_WW === 'true';

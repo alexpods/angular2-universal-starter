@@ -9,7 +9,7 @@ import { Workers } from './workers';
   template: '<router-outlet></router-outlet>'
 })
 @RouteConfig([
-  { path: '/home',    name: 'Home',   component: Home, useAsDefault: true },
-  { path: '/workers',  name: 'Workers', component: Workers }
+  { path: '/home',    name: 'Home',    component: Home,   useAsDefault: true },
+  { path: '/workers', name: 'Workers', component: Workers }
 ])
 export class App {}
