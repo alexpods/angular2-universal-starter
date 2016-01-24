@@ -15,8 +15,9 @@ Enjoy Server Side rendering and Web Workers in your Angular2 Application
 - [Server Sider rendering](https://angularu.com/VideoSession/2015sf/angular-2-server-rendering) for instant page loading
 - Entire Angular2 application is running in a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) (UI always will be smooth)
 - [Preboot](https://www.npmjs.com/package/preboot) to catch browser events before Angular2 is ready to work (you can experement with its options [here](https://github.com/alexpods/angular2-universal-starter/blob/master/src/server/const.ts#L38))
-- [Express](http://expressjs.com/)
 - [Webpack](https://webpack.github.io/) and its awesome [Code Splitting](https://webpack.github.io/docs/code-splitting.html) feature which allows us to lazy load parts of an application.
+- Live Reloading, a browser will be reloaded on any change in server or browser code. It works well for both a main thread and web workers.
+- [Express](http://expressjs.com/)
 - [Typescript](http://www.typescriptlang.org/) with [Typings](https://github.com/typings/typings)
 - [PM2](http://pm2.keymetrics.io/)
 - Unit testing with [Karma](http://karma-runner.github.io/)
@@ -47,6 +48,18 @@ npm stop
 npm restart
 ```
 
+## Development with Live Reloading
+```bash
+# make sure that server is not running
+npm stop
+
+# run development server with live reloading support
+npm run dev
+```
+
+The development server will watch for any changes, make rebuilds and reload a browser. All built code will be kept in 
+memory, so `dist` folder will not be generated (**all** means code for **both** **client** and **server** sides).
+
 ##Turning server side rendering and web workers on/off
 You can optionally turn server sider rendering or web workers suport on/off. You just need
 to change `NG2_SS` and `NG2_WW` environment variables in `ecosystem.json` file:
@@ -62,7 +75,11 @@ to change `NG2_SS` and `NG2_WW` environment variables in `ecosystem.json` file:
 ```
 Then you need to restart the server to apply the changes:
 ```bash
+# for production server
 npm restart
+
+# for development server - stop its process and run it again
+npm run dev
 ```
 
 #Building

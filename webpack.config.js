@@ -41,7 +41,7 @@ const LOADERS = [{
 
 const CLIENT_CONFIG = {
   context: SRC_DIR,
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   target: 'web',
   entry: {
     boot_browser:    path.resolve(SRC_DIR, 'boot_browser.ts'),
@@ -72,7 +72,7 @@ const CLIENT_CONFIG = {
 
 const SERVER_CONFIG = {
   target: 'node',
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   entry: path.resolve(SERVER_DIR, 'app.ts'),
   output: {
     path: PRIVATE_DIR,

@@ -1,11 +1,14 @@
+const ecosystemJson = require('../ecosystem.json');
 const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const constants = require('../constants');
 const webpackConfigs = require('../webpack.config');
 
-const ProgressPlugin = require('webpack/lib/ProgressPlugin');
+process.env.NG2_SS = process.env.NG2_SS || ecosystemJson.env.NG2_SS;
+process.env.NG2_WW = process.env.NG2_WW || ecosystemJson.env.NG2_WW;
 
+const constants = require('../constants');
+    
 const HOST = constants.HOST;
 const PORT = constants.PORT;
 
@@ -60,9 +63,10 @@ server.use('/', function proxyApp(req, res, next) {
 server.listen(PORT, HOST);
 
 
-// TODO: Shut up enableProdMode() message
+// Shut up enableProdMode() message
+// TODO: Think about another way to do it
 const log = console.log;
 console.log = function(message) {
-  if (message.indexOf('Angular 2 is running') === 0) return;
+  if (typeof message === 'string' && message.indexOf('Angular 2 is running') === 0) return;
   return log.apply(this, arguments);
 } 
