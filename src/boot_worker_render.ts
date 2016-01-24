@@ -1,5 +1,5 @@
 import { platform, provide } from 'angular2/core';
-import { WORKER_RENDER_APP_ROUTER } from './.worker/ui';
+import { WORKER_RENDER_APP_ROUTER } from './.patches/worker/ui';
 import { 
   WebWorkerInstance, 
   WORKER_RENDER_APP, 

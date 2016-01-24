@@ -105,8 +105,7 @@ const TESTING_CONFIG = {
   }
 };
 
-const DEV_CONFIG = { 
-  progress: true,
+const DEV_CONFIG = {
   contentBase: false, 
   queit: false, 
   noInfo: false,

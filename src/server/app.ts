@@ -7,8 +7,8 @@ import * as express from 'express';
 import { provide } from 'angular2/core';
 import { PlatformLocation, APP_BASE_HREF, ROUTER_PROVIDERS } from 'angular2/router';
 import { Request, Response } from 'express';
-import { REQUEST_URL, ServerPlatformLocation } from './.universal/router';
-import { renderComponent } from './.universal/render';
+import { REQUEST_URL, ServerPlatformLocation } from '../.patches/universal/router';
+import { renderComponent } from '../.patches/universal/render';
 import { App } from '../app/app.ts';
 
 // TODO: make "constants" to be an external dependency
