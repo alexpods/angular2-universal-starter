@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/alexpods/angular2-universal-starter.svg?branch=master)](https://travis-ci.org/alexpods/angular2-universal-starter)
 [![Dependency Status](https://david-dm.org/alexpods/angular2-universal-starter.svg)](https://david-dm.org/alexpods/angular2-universal-starter)
+[![devDependency Status](https://david-dm.org/alexpods/angular2-universal-starter/dev-status.svg)](https://david-dm.org/alexpods/angular2-universal-starter#info=devDependencies)
 [![Issue Stats](http://issuestats.com/github/alexpods/angular2-universal-starter/badge/pr?style=flat-square)](http://issuestats.com/github/alexpods/angular2-universal-starter)
 [![Issue Stats](http://issuestats.com/github/alexpods/angular2-universal-starter/badge/issue?style=flat-square)](http://issuestats.com/github/alexpods/angular2-universal-starter)
 [![Join the chat at https://gitter.im/alexpods/angular2-universal-starter](https://badges.gitter.im/alexpods/angular2-universal-starter.svg)](https://gitter.im/alexpods/angular2-universal-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
