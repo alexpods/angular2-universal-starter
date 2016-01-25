@@ -1,6 +1,7 @@
 language: node_js
 
 node_js:
+  - 4.2.0
   - 5.4.0
   
 before_install:
@@ -11,7 +12,9 @@ before_install:
   - sudo apt-get install -y libappindicator1 fonts-liberation 
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
-  - sleep 3
+  - npm install semver
+  - export NPM_V=$(npm -v) 
+  - 'if node -e "process.exit(require(''semver'').gt(process.env.NPM_V, ''3.0.0''))"; then npm install -g npm@3.0.0; fi'
 
 install:
   - npm install

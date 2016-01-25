@@ -24,6 +24,11 @@ Enjoy Server Side rendering and Web Workers in your Angular2 Application
 - Unit testing with [Karma](http://karma-runner.github.io/)
 - End-to-End testing with [Protractor](https://angular.github.io/protractor)
 
+##Requirements
+
+- **`node`** >= **4.2.0**
+- **`npm`** >= **3.0.0**
+
 #Quick start
 ```bash
 # clone the repo without git history
