@@ -63,7 +63,7 @@ memory, so `dist` folder will not be generated (**all** means code for **both** 
 
 ##Turning server side rendering and web workers on/off
 You can optionally turn server sider rendering or web workers suport on/off. You just need
-to change `HAS_SS` and `HAS_WW` in `constants.js` [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L22):
+to change `HAS_SS` and `HAS_WW` in `constants.js` [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L15):
 
 ```js
 // ...
