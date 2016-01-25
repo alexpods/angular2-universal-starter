@@ -8,9 +8,6 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const webpackConfigs = require('../webpack.config');
 
-process.env.NG2_SS = process.env.NG2_SS || ecosystemJson.env.NG2_SS;
-process.env.NG2_WW = process.env.NG2_WW || ecosystemJson.env.NG2_WW;
-
 const constants = require('../constants');
     
 const HOST = constants.HOST;
