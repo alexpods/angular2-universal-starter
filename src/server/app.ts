@@ -1,7 +1,3 @@
-import 'reflect-metadata';
-import 'zone.js/dist/zone-microtask';
-import 'zone.js/dist/long-stack-trace-zone';
-
 import * as serveStatic from 'serve-static';
 import * as express from 'express';
 import { provide } from 'angular2/core';
@@ -90,6 +86,8 @@ app.use((err: any, req: Request, res: Response, next: Function) => {
  * Print error message with a stacktrace.
  */
 app.use((err: any, req: Request, res: Response, next: Function) => {
+  debugger;
+  
   return res.status(err.status).send(`
     <h1>${err.message}<h1>
     <h2>${err.status}</h2>

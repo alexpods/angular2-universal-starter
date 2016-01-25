@@ -1,3 +1,7 @@
+require('reflect-metadata');
+require('zone.js/dist/zone-microtask');
+require('zone.js/dist/long-stack-trace-zone');
+
 const ecosystemJson = require('../ecosystem.json');
 const path = require('path');
 const webpack = require('webpack');
@@ -12,6 +16,7 @@ const constants = require('../constants');
 const HOST = constants.HOST;
 const PORT = constants.PORT;
 
+const ROOT_DIR        = constants.ROOT_DIR;
 const SERVER_APP_DIR  = constants.SERVER_APP_DIR;
 const SERVER_APP_PATH = constants.SERVER_APP_PATH;
 
@@ -56,7 +61,23 @@ compiler.plugin('done', function updateApp() {
   app = module_.exports.app; 
 });
 
+const RUN_SCRIPT_REGEXP = /\<script[^>]+src=['"]run_.+['"][^>]*\>\<\/script\>/;
+const WEBPACK_DEV_CLIENT_SCRIPT = '<script type="text/javascript" src="/webpack-dev-server.js"></script>';
+
 server.use('/', function proxyApp(req, res, next) {
+  const send_ = res.send;
+  res.send = function send(content) {
+    if (!RUN_SCRIPT_REGEXP.test(content)) {
+      if (~content.indexOf('</body>')) {
+        content = content.replace('</body>', WEBPACK_DEV_CLIENT_SCRIPT + '</body>');
+      } else {
+        content += WEBPACK_DEV_CLIENT_SCRIPT;
+      }
+    }
+    
+    return send_.call(this, content);
+  };
+  
   return app(req, res, next);
 });
 
