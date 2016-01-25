@@ -5,15 +5,12 @@ import { REQUEST_URL, ServerPlatformLocation } from '../.patches/universal/route
 import { renderComponent } from '../.patches/universal/render';
 import { App } from '../app/app';
 
-// TODO: make "constants" to be an external dependency
-const { HAS_SS, HAS_WW, PREBOOT, WORKER_SCRIPTS, BROWSER_SCRIPTS } = require('../../constants');
-
 function reduceScripts(content, src) {
-  return content + '<script type="text/javascript" src="' + src + '"></script>';
+  return `${content}<script type="text/javascript" src="${src}"></script>`;
 }
 
-const WORKER_SCRIPTS_HTML  = WORKER_SCRIPTS.reduce(reduceScripts, '');
-const BROWSER_SCRIPTS_HTML = BROWSER_SCRIPTS.reduce(reduceScripts, '');
+const WORKER_SCRIPTS  = ["run_worker.js",  "vendor.js", "boot_worker.js"].reduce(reduceScripts, '');
+const BROWSER_SCRIPTS = ["run_browser.js", "vendor.js", "boot_browser.js"].reduce(reduceScripts, '');
 
 const HTML_FILE = require('./ng.html');
 
@@ -42,7 +39,7 @@ router.get('/*', (req: Request, res: Response, next: Function) => {
       return HTML_FILE;
     })
     .then((rawContent) => {
-      const scripts = HAS_WW ? WORKER_SCRIPTS_HTML : BROWSER_SCRIPTS_HTML;
+      const scripts = HAS_WW ? WORKER_SCRIPTS : BROWSER_SCRIPTS;
       const content = rawContent.replace('</body>', scripts+ '</body>');
       
       return res.send(content);

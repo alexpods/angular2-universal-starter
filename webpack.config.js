@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const constants = require('./constants');
 
+const DefinePlugin = webpack.DefinePlugin;
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 
 const SRC_DIR     = constants.SRC_DIR;
@@ -13,6 +14,16 @@ const SERVER_DIR  = constants.SERVER_DIR;
 const SERVER_APP_NAME = constants.SERVER_APP_NAME;
 
 const NODE_MODULES = constants.NODE_MODULES;
+
+function mapValues(object, iteratee) {
+  const newObject = {};
+  
+  Object.keys(object).forEach(function(key) {
+    newObject[key] = iteratee(object[key], key, object);    
+  });
+  
+  return newObject;
+}
 
 const LOADERS = [{
   test: /\.ts$/,
@@ -89,7 +100,10 @@ const SERVER_CONFIG = {
   },
   module: {
     loaders: LOADERS
-  }
+  },
+  plugins: [
+    new DefinePlugin(mapValues(constants, JSON.stringify))
+  ]
 };
 
 const TESTING_CONFIG = {

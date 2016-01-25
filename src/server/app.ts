@@ -3,9 +3,6 @@ import * as express from 'express';
 import { Request, Response } from 'express';
 import { router as ngRouter } from './ng';
 
-// TODO: make "constants" to be an external dependency
-const { PUBLIC_DIR } = require('./../../constants.js');
-
 const app = express();
 
 app.use('/', serveStatic(PUBLIC_DIR));

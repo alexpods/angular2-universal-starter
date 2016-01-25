@@ -15,7 +15,7 @@ Enjoy Server Side rendering and Web Workers in your Angular2 Application
 
 - [Server Sider rendering](https://angularu.com/VideoSession/2015sf/angular-2-server-rendering) for instant page loading
 - Entire Angular2 application is running in a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) (UI always will be smooth)
-- [Preboot](https://www.npmjs.com/package/preboot) to catch browser events before Angular2 is ready to work (you can experement with its options [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L32))
+- [Preboot](https://www.npmjs.com/package/preboot) to catch browser events before Angular2 is ready to work (you can experement with its options [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L25))
 - [Webpack](https://webpack.github.io/) and its awesome [Code Splitting](https://webpack.github.io/docs/code-splitting.html) feature which allows us to lazy load parts of an application.
 - Live Reloading, a browser will be reloaded on any change in server or browser code. It works well for both a main thread and web workers.
 - [Express](http://expressjs.com/)
@@ -35,35 +35,35 @@ cd angular2-universal-starter
 # install dependencies
 npm install
 
-# run the server
+# run the production server
 npm start
 ```
 Go to [http://localhost:3000](http://localhost:3000) in your browser.
 
-You may want to stop or restart the server:
+You may want to stop or restart the production server:
 ```bash
-# stop the server
+# stop the production server
 npm stop
 
-# restart the server
+# restart the production server
 npm restart
 ```
 
 ## Development with Live Reloading
 ```bash
-# make sure that server is not running
+# make sure that the production server is not running
 npm stop
 
-# run development server with live reloading support
+# run the development server with live reloading support
 npm run dev
 ```
 
-The development server will watch for any changes, make rebuilds and reload a browser. All built code will be kegipt in 
+The development server will watch for any changes, make rebuilds and reload a browser. All built code will be kept in 
 memory, so `dist` folder will not be generated (**all** means code for **both** **client** and **server** sides).
 
 ##Turning server side rendering and web workers on/off
 You can optionally turn server sider rendering or web workers suport on/off. You just need
-to change `HAS_SS` and `HAS_WW` in `constants.js` [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L15):
+to change `HAS_SS` and `HAS_WW` in `constants.js` [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L14):
 
 ```js
 // ...

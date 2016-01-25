@@ -11,12 +11,12 @@
     "experimentalDecorators": true
   },
   "files": [
+    "typings.d.ts",
     "src/vendor.ts",
     "src/boot_browser.ts",
     "src/boot_worker_app.ts",
     "src/boot_worker_render.ts",
     "src/server/app.ts",
-    "typings/main.d.ts",
     "test/unit.spec.ts"
   ]
 }
