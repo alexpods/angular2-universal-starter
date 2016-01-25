@@ -31,9 +31,7 @@ const router = Router();
 router.get('/*', (req: Request, res: Response, next: Function) => {
   return Promise.resolve()
     .then(() => {
-      console.log('there', HAS_SS);
       if (HAS_SS) {
-        console.log('here');
         const REQUEST_PROVIDERS = [
           provide(REQUEST_URL,  { useValue: req.originalUrl })
         ];
