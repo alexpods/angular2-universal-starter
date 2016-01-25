@@ -58,30 +58,32 @@ npm stop
 npm run dev
 ```
 
-The development server will watch for any changes, make rebuilds and reload a browser. All built code will be kept in 
+The development server will watch for any changes, make rebuilds and reload a browser. All built code will be kegipt in 
 memory, so `dist` folder will not be generated (**all** means code for **both** **client** and **server** sides).
 
 ##Turning server side rendering and web workers on/off
 You can optionally turn server sider rendering or web workers suport on/off. You just need
-to change `NG2_SS` and `NG2_WW` environment variables in `ecosystem.json` file:
-```js
-{
-  // ...
-  "env": {
-    // ...
-    "NG2_SS": true, // Server Side Rendering. Set it to `false` to turn it off.
-    "NG2_WW": true  // Web Workers support. Set it to `false` to turn it off
-  }
-}
-```
-Then you need to restart the server to apply the changes:
-```bash
-# for production server
-npm restart
+to change `HAS_SS` and `HAS_WW` in `constants.js` [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L22):
 
-# for development server - stop its process and run it again
-npm run dev
+```js
+// ...
+
+// Server side rendering. Set it to `false` to turn it of.
+exports.HAS_SS = 'NG2_SS' in process.env ? process.env.NG2_SS === 'true' : true;
+// For example:
+// exports.HAS_SS = false;
+
+// Web workers support. Set it to `false` to turn it of.
+exports.HAS_WW = 'NG2_WW' in process.env ? process.env.NG2_WW === 'true' : true;
+// For example:
+// exports.HAS_WW = 'NG2_WW' in process.env ? process.env.NG2_WW === 'true' : false;
+
+//...
 ```
+
+If you're using a development server, you don't need to restart it. The development server will just make rebuild and apply new changes.
+
+If you're using a production server (`npm start`), you also don't need to restart it. Just rebuild your sources (`npm run build`, if `npm run build:watch` is running you don't need to do anything).
 
 #Building
 ```bash

@@ -6,9 +6,5 @@
   "error_file": "./logs/errors.log",
   "out_file": "./logs/output.log",
   "autorestart": true,
-  "env": {
-    "PORT": 3000,
-    "NG2_SS": true,
-    "NG2_WW": true
-  }
+  "env": {}
 }

@@ -26,25 +26,25 @@ script:
   
   - "kill $(lsof -t -i:3000) | true"
 
-  - _NG2_WW=true  _NG2_SS=true  $(npm bin)/pm2 start ecosystem.json
+  - NG2_WW=true  NG2_SS=true  $(npm bin)/pm2 start ecosystem.json
   - npm run e2e
   - $(npm bin)/pm2 delete ecosystem.json; 
 
   - "kill $(lsof -t -i:3000) | true"
 
-  - _NG2_WW=false _NG2_SS=true  $(npm bin)/pm2 start ecosystem.json
+  - NG2_WW=false NG2_SS=true  $(npm bin)/pm2 start ecosystem.json
   - npm run e2e
   - $(npm bin)/pm2 delete ecosystem.json; 
 
   - "kill $(lsof -t -i:3000) | true"
 
-  - _NG2_WW=false _NG2_SS=false $(npm bin)/pm2 start ecosystem.json
+  - NG2_WW=false NG2_SS=false $(npm bin)/pm2 start ecosystem.json
   - npm run e2e
   - $(npm bin)/pm2 delete ecosystem.json; 
 
   - "kill $(lsof -t -i:3000) | true"
 
-  - "_NG2_WW=true _NG2_SS=true npm run dev &"
+  - "NG2_WW=true NG2_SS=true npm run dev &"
   - DEV_SERVER_PID=$!
   - sleep 5
   - npm run e2e
@@ -52,7 +52,7 @@ script:
   
   - "kill $(lsof -t -i:3000) | true"
 
-  - "_NG2_WW=false _NG2_SS=true npm run dev &"
+  - "NG2_WW=false NG2_SS=true npm run dev &"
   - DEV_SERVER_PID=$!
   - sleep 5
   - npm run e2e
@@ -60,7 +60,7 @@ script:
   
   - "kill $(lsof -t -i:3000) | true"
 
-  - "_NG2_WW=false _NG2_SS=false npm run dev &"
+  - "NG2_WW=false NG2_SS=false npm run dev &"
   - DEV_SERVER_PID=$!
   - sleep 5
   - npm run e2e
