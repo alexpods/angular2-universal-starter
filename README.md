@@ -13,9 +13,9 @@ Enjoy Server Side rendering and Web Workers in your Angular2 Application
 
 #What we've got here
 
-- [Server Sider rendering](https://angularu.com/VideoSession/2015sf/angular-2-server-rendering) for instant page loading
+- [Server Side rendering](https://angularu.com/VideoSession/2015sf/angular-2-server-rendering) for instant page loading
 - Entire Angular2 application is running in a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) (UI always will be smooth)
-- [Preboot](https://www.npmjs.com/package/preboot) to catch browser events before Angular2 is ready to work (you can experement with its options [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L25))
+- [Preboot](https://www.npmjs.com/package/preboot) to catch browser events before Angular2 is ready to work (you can experiment with its options [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L25))
 - [Webpack](https://webpack.github.io/) and its awesome [Code Splitting](https://webpack.github.io/docs/code-splitting.html) feature which allows us to lazy load parts of an application.
 - Live Reloading, a browser will be reloaded on any change in server or browser code. It works well for both a main thread and web workers.
 - [Typescript](http://www.typescriptlang.org/) with [Typings](https://github.com/typings/typings)
@@ -68,7 +68,7 @@ The development server will watch for any changes, make rebuilds and reload a br
 memory, so `dist` folder will not be generated (**all** means code for **both** **client** and **server** sides).
 
 ##Turning server side rendering and web workers on/off
-You can optionally turn server sider rendering or web workers suport on/off. You just need
+You can optionally turn server side rendering or web workers suport on/off. You just need
 to change `HAS_SS` and `HAS_WW` in `constants.js` [here](https://github.com/alexpods/angular2-universal-starter/blob/master/constants.js#L14):
 
 ```js
@@ -93,8 +93,8 @@ If you're using a production server (`npm start`), you also don't need to restar
 
 #Building
 ```bash
-# build the probject
-npm run buid
+# build the project
+npm run build
 
 # build the project and start watching for its changes
 npm run build:watch
@@ -141,7 +141,7 @@ For end-to-end tests you nedd to start Selenium Server (webdriver) first.
 # start Selenium Server (webdriver)
 npm run webdriver:start
 
-# run ent-to-end test (single run)
+# run end-to-end test (single run)
 npm run e2e
 ```
 
