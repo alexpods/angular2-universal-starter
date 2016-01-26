@@ -17,6 +17,8 @@
     "prebuild": "npm run clean:dist",
     "build": "webpack --progress",
     "build:watch": "npm run build -- --watch",
+    "lint": "node tools/lint.js",
+    "lint:watch": "node tools/lint.js --watch",
     "prestart": "npm run build",
     "start": "pm2 start ecosystem.json",
     "restart": "npm stop && npm start",
@@ -54,6 +56,8 @@
     "zone.js": "^0.5.10"
   },
   "devDependencies": {
+    "chalk": "^1.1.1",
+    "chokidar": "^1.4.2",
     "jasmine-core": "^2.4.1",
     "json-loader": "^0.5.4",
     "karma": "^0.13.19",
@@ -68,6 +72,7 @@
     "raw-loader": "^0.5.1",
     "rimraf": "^2.5.0",
     "ts-loader": "^0.8.0",
+    "tslint": "^3.3.0",
     "typescript": "^1.7.5",
     "typings": "^0.6.2",
     "webpack": "^1.12.10",

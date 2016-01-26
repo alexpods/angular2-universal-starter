@@ -7,24 +7,24 @@ export const REQUEST_URL = {};
 @Injectable()
 export class ServerPlatformLocation extends PlatformLocation {
   private _url: Url;
-  
+
   constructor(@Inject(REQUEST_URL) requestUrl: string) {
     super();
     this._url = parse(requestUrl);
   }
-  
+
   get pathname(): string {
     return this._url.pathname;
   }
-  
+
   set pathname(pathname: string) {
     this._url.pathname = pathname;
   }
-  
+
   get search(): string {
     return this._url.search || '';
   }
-  
+
   get hash(): string {
     // Although we don't have hashes on a server side, but maybe it will be usefull 
     // in the future for some sort of crazy hacks.
@@ -49,7 +49,7 @@ export class ServerPlatformLocation extends PlatformLocation {
   public replaceState(state: any, title: string, url: string): void {}
   public forward(): void {}
   public back(): void {}
-  
+
   /**
    * Need to prevent original implementation
    */

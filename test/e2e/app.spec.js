@@ -11,7 +11,7 @@ describe('angular2-universal-starter application', function() {
       
       expect(message.isPresent()).toBeFalsy();
       button.click();
-      browser.wait(function() { return message.isPresent() }, 5000);
+      browser.wait(function() { return message.isPresent() }, 10000);
     });
     
     it('should show lazy loaded greeting message', function() {
@@ -21,7 +21,7 @@ describe('angular2-universal-starter application', function() {
       expect(message.isPresent()).toBeFalsy();
       button.click();
       expect(message.isPresent()).toBeFalsy();
-      browser.wait(function() { return message.isPresent() }, 5000);
+      browser.wait(function() { return message.isPresent() }, 10000);
     });  
   });
   

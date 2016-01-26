@@ -9,9 +9,9 @@ platform(BROWSER_PROVIDERS).application(BROWSER_APP_PROVIDERS).bootstrap(App, [
 .then((compRef: ComponentRef) => {
   const injector: Injector = compRef.injector;
   const router:   Router   = injector.get(Router);
-  
-  return (<any>router)._currentNavigation;
+
+  return (<any> router)._currentNavigation;
 })
 .then(() => {
-  document.dispatchEvent(new Event('BootstrapComplete'));  
+  document.dispatchEvent(new Event('BootstrapComplete'));
 });

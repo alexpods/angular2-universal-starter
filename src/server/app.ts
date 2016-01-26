@@ -14,7 +14,7 @@ app.use('/', ngRouter);
 app.use((req: Request, res: Response, next: Function) => {
   const err: any = new Error('Not Found');
   err.status = 404;
-  
+
   return next(err);
 });
 
@@ -23,15 +23,15 @@ app.use((req: Request, res: Response, next: Function) => {
  */
 app.use((err: any, req: Request, res: Response, next: Function) => {
   const status: number = err.staus || 500;
-  
+
   let stack: string = err.message;
   let message: string = err.stack;
-  
+
   if (message.length > 100) {
     stack = message + (stack ? ('\n\n' + stack) : '');
     message = 'Server Error';
   }
-  
+
   return next({ status, message, stack });
 });
 
@@ -45,6 +45,6 @@ app.use((err: any, req: Request, res: Response, next: Function) => {
     <h2>${err.status}</h2>
     <pre>${err.stack}</pre>
   `);
-}); 
- 
+});
+
 export { app };

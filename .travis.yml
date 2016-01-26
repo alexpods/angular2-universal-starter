@@ -23,6 +23,8 @@ before_script:
   - "npm run webdriver:start &"
   
 script:
+  - npm run lint
+  
   - npm start
   - npm run unit
   - npm stop
