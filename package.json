@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "angular2": "2.0.0-beta.1",
-    "angular2-universal-preview": "0.32.0",
+    "angular2-universal-preview": "0.32.2",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.34.1",
     "express": "^4.13.3",
@@ -62,8 +62,7 @@
     "karma-phantomjs-launcher": "^0.2.3",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
-    "phantomjs": "^1.9.19",
-    "phantomjs-polyfill": "0.0.1",
+    "phantomjs": "^2.1.2",
     "pm2": "^1.0.0",
     "protractor": "^3.0.0",
     "raw-loader": "^0.5.1",

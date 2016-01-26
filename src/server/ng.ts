@@ -2,8 +2,10 @@ import { Router, Request, Response } from 'express';
 import { provide } from 'angular2/core';
 import { PlatformLocation, APP_BASE_HREF, ROUTER_PROVIDERS } from 'angular2/router';
 import { REQUEST_URL, ServerPlatformLocation } from '../.patches/universal/router';
-import { renderComponent } from '../.patches/universal/render';
 import { App } from '../app/app';
+
+const { selectorRegExpFactory } = require('angular2-universal-preview');
+const { renderToStringWithPreboot, selectorResolver } = require('angular2-universal-preview/dist/server/src/render');
 
 function reduceScripts(content, src) {
   return `${content}<script type="text/javascript" src="${src}"></script>`;
@@ -13,6 +15,14 @@ const WORKER_SCRIPTS  = ["run_worker.js",  "vendor.js", "boot_worker.js"].reduce
 const BROWSER_SCRIPTS = ["run_browser.js", "vendor.js", "boot_browser.js"].reduce(reduceScripts, '');
 
 const HTML_FILE = require('./ng.html');
+
+export function renderComponent(html, component, providers, prebootOptions) {
+  return renderToStringWithPreboot(component, providers, prebootOptions).then((serializedCmp) => {
+    const selector: string = selectorResolver(component);
+
+    return html.replace(selectorRegExpFactory(selector), serializedCmp);
+  });
+}
 
 const PROVIDERS = [
   ROUTER_PROVIDERS,

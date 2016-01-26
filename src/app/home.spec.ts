@@ -29,7 +29,7 @@ describe('Home', () => {
       nativeElement.querySelector('#check-lazyloading').click();
       expect(componentInstance.messageLazyLoading).toBeFalsy();
       
-      return new Promise(resolve => setTimeout(resolve, 0)).then(() => {
+      return new Promise(resolve => setTimeout(resolve, 100)).then(() => {
         expect(componentInstance.messageLazyLoading).toBeTruthy();        
       });
     });

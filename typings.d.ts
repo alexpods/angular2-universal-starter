@@ -19,9 +19,6 @@ declare const SERVER_APP_PATH: string;
 
 declare const NODE_MODULES: string[];
 
-declare const WORKER_SCRIPTS: string[];
-declare const BROWSER_SCRIPTS: string[];
-
 declare const PREBOOT: { 
   appRoot: string, 
   freeze:  any,
