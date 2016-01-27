@@ -1,6 +1,6 @@
 {
   "name": "angular2-universal-starter",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Enjoy Server Side rendering and Web Workers in your Angular2 Application",
   "author": "Alex Podskrebyshev <aleksey.podskrebyshev@gmail.com>",
   "license": "MIT",
