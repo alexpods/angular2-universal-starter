@@ -1,29 +1,63 @@
-const webpack = require('webpack');
-const path = require('path');
-const fs = require('fs');
+const webpack   = require('webpack');
+const fs        = require('fs');
+const path      = require('path');
 const constants = require('./constants');
 
-const DefinePlugin = webpack.DefinePlugin;
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+const DefinePlugin       = webpack.DefinePlugin;
+const DllPlugin          = webpack.DllPlugin;
+const DllReferencePlugin = webpack.DllReferencePlugin;
 
+const ROOT_DIR    = constants.ROOT_DIR;
 const SRC_DIR     = constants.SRC_DIR;
 const PUBLIC_DIR  = constants.PUBLIC_DIR;
 const PRIVATE_DIR = constants.PRIVATE_DIR;
-const SERVER_DIR  = constants.SERVER_DIR;
 
-const SERVER_APP_NAME = constants.SERVER_APP_NAME;
+const VENDOR_NAME     = constants.VENDOR_NAME;
+const SERVER_NAME     = constants.SERVER_NAME;
+const BROWSER_NAME    = constants.BROWSER_NAME;
+const WORKER_NAME     = constants.WORKER_NAME;
+const WORKER_APP_NAME = constants.WORKER_APP_NAME;
 
-const NODE_MODULES = constants.NODE_MODULES;
+const SERVER_SOURCE_PATH     = constants.SERVER_SOURCE_PATH;
+const BROWSER_SOURCE_PATH    = constants.BROWSER_SOURCE_PATH;
+const WORKER_SOURCE_PATH     = constants.WORKER_SOURCE_PATH;
+const WORKER_APP_SOURCE_PATH = constants.WORKER_APP_SOURCE_PATH;
 
-function mapValues(object, iteratee) {
-  const newObject = {};
-  
-  Object.keys(object).forEach(function(key) {
-    newObject[key] = iteratee(object[key], key, object);    
-  });
-  
-  return newObject;
-}
+const VENDOR_DLL_MANIFEST_FILE = constants.VENDOR_DLL_MANIFEST_FILE;
+const VENDOR_DLL_MANIFEST_PATH = constants.VENDOR_DLL_MANIFEST_PATH;
+
+const NODE_MODULES = fs.readdirSync(ROOT_DIR + '/node_modules').filter(function(name) {
+  return name != '.bin';
+});
+
+const STATS_OPTIONS = {
+  colors: {
+    level: 2,
+    hasBasic: true,
+    has256: true,
+    has16m: false
+  },
+  cached: false,
+  cachedAssets: false,
+  modules: true,
+  chunks: false,
+  reasons: false,
+  errorDetails: false,
+  chunkOrigins: false,
+  exclude: ['node_modules']
+};
+
+const WATCH_OPTIONS = {
+  aggregateTimeout: 100,
+  poll: undefined
+};
+
+const DEV_OPTIONS = {
+  contentBase: false, 
+  queit: false, 
+  noInfo: false,
+  stats: STATS_OPTIONS
+};
 
 const LOADERS = [{
   test: /\.ts$/,
@@ -50,29 +84,116 @@ const LOADERS = [{
   loader: 'json'
 }];
 
-const CLIENT_CONFIG = {
-  context: SRC_DIR,
-  devtool: 'inline-source-map',
+const DEFINE_CONSTANTS_PLUGIN = new DefinePlugin((function stringifyConstants() {
+  const stringifiedConstants = {};
+  
+  Object.keys(constants).forEach(function(constantName) {
+    stringifiedConstants[constantName] = JSON.stringify(constants[constantName]);    
+  });
+  
+  return stringifiedConstants;
+})());
+
+const VENDOR_DLL_REFERENCE_PLUGIN = new DllReferencePlugin({
+  context: ROOT_DIR,
+  sourceType: 'var',
+  get manifest() {
+    return require(VENDOR_DLL_MANIFEST_PATH);
+  }
+});
+
+const VENDOR_CONFIG = {
   target: 'web',
   entry: {
-    boot_browser:    path.resolve(SRC_DIR, 'boot_browser.ts'),
-    boot_worker:     path.resolve(SRC_DIR, 'boot_worker_render.ts'),
-    boot_worker_app: path.resolve(SRC_DIR, 'boot_worker_app.ts'),
-    vendor:          path.resolve(SRC_DIR, 'vendor.ts'),
+    [VENDOR_NAME]: [
+      'es6-shim',
+      'es6-promise',
+      'reflect-metadata',
+      'zone.js/lib/browser/zone-microtask',
+      'zone.js/lib/browser/long-stack-trace-zone',
+      'angular2/core',
+      'angular2/router',
+    ]
   },
   output: {
     path: PUBLIC_DIR,
     filename: '[name].js',
-    // if you're changing this field, don't forget to synchronize it with "WorkWithWorkersPlugin"
-    chunkFilename: "[id].chunk.js" 
+    library: VENDOR_NAME,
+    libraryTarget: 'var'
   },
   plugins: [
-    new CommonsChunkPlugin({ name: 'vendor',  minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'run_browser',     chunks: ['vendor', 'boot_browser'],    minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'run_worker',      chunks: ['vendor', 'boot_worker'],     minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'run_worker_app',  chunks: ['vendor', 'boot_worker_app'], minChunks: Infinity }),
-    WorkWithWorkersPlugin()
+    new DllPlugin({
+      name: VENDOR_NAME,
+      path: VENDOR_DLL_MANIFEST_PATH
+    })
+  ]
+};
+
+const BROWSER_CONFIG = {
+  target: 'web',
+  entry: {
+    [BROWSER_NAME]: [
+      BROWSER_SOURCE_PATH
+    ]
+  },
+  output: {
+    path: PUBLIC_DIR,
+    filename: '[name].js',
+    chunkFilename: '[id].' + BROWSER_NAME + '.js',
+  },
+  plugins: [
+    VENDOR_DLL_REFERENCE_PLUGIN
   ],
+  resolve: {
+    extensions: ['', '.ts', '.js']
+  },
+  module: {
+    loaders: LOADERS
+  }
+};
+
+const WORKER_CONFIG = {
+  target: 'web',
+  entry: {
+    [WORKER_NAME]: [
+      WORKER_SOURCE_PATH
+    ]
+  },
+  output: {
+    path: PUBLIC_DIR, 
+    filename: '[name].js',
+    chunkFilename: '[id].' + WORKER_NAME + '.js',
+  },
+  plugins: [
+    VENDOR_DLL_REFERENCE_PLUGIN,
+    DEFINE_CONSTANTS_PLUGIN,
+  ],
+  resolve: {
+    extensions: ['', '.ts', '.js']
+  },
+  module: {
+    loaders: LOADERS
+  }
+};
+
+const WORKER_APP_CONFIG = {
+  target: 'webworker',
+  entry: {
+    [WORKER_APP_NAME]: [
+      WORKER_APP_SOURCE_PATH
+    ]
+  },
+  output: {
+    path: PUBLIC_DIR,
+    filename: '[name].js',
+    chunkFilename: '[id].' + WORKER_APP_NAME + '.js'
+  },
+  get plugins() {
+    return [
+      VENDOR_DLL_REFERENCE_PLUGIN,
+      DEFINE_CONSTANTS_PLUGIN,
+    ];
+  } ,
   resolve: {
     extensions: ['', '.ts', '.js']
   },
@@ -83,27 +204,34 @@ const CLIENT_CONFIG = {
 
 const SERVER_CONFIG = {
   target: 'node',
-  devtool: 'inline-source-map',
-  entry: path.resolve(SERVER_DIR, 'app.ts'),
+  entry: {
+    [SERVER_NAME]: [
+      SERVER_SOURCE_PATH
+    ]
+  },
   output: {
     path: PRIVATE_DIR,
-    filename: SERVER_APP_NAME,
+    filename: '[name].js',
+    chunkFilename: '[id].' + SERVER_NAME + '.js',
+    library: SERVER_NAME,
     libraryTarget: 'commonjs2'
   },
+  plugins: [
+    DEFINE_CONSTANTS_PLUGIN
+  ],
+  node: {
+    __dirname:  true,
+    __filename: true
+  },
+  externals: [
+    NODE_MODULES.map(function(name) { return new RegExp('^' + name) }),
+  ],
   resolve: {
     extensions: ['', '.ts', '.js']
   },
-  externals: NODE_MODULES.map(function(name) { return new RegExp('^' + name) }),
-  node: {
-    __dirname: true,
-    __filename: true
-  },
-  module: {
+  module: { 
     loaders: LOADERS
-  },
-  plugins: [
-    new DefinePlugin(mapValues(constants, JSON.stringify))
-  ]
+  }
 };
 
 const TESTING_CONFIG = {
@@ -119,89 +247,15 @@ const TESTING_CONFIG = {
   }
 };
 
-const DEV_CONFIG = {
-  contentBase: false, 
-  queit: false, 
-  noInfo: false,
-  stats: {
-    colors:  true,
-    hash:    true,
-    version: false,
-    timings: true,
-    assets:  true,
-    chunks:  false,
-    chunkModules: true,
-    children: true,
-    modules: false, 
-    cached: true,
-    reasons: true,
-    errorDetails: true,
-    chunkOrigins: true,    
-    modulesSort: true,
-    chunksSort: true,
-    assetsSort: true,
-    context: false,
-    source: true
-  }
-};
+exports = module.exports = [VENDOR_CONFIG, BROWSER_CONFIG, WORKER_CONFIG, WORKER_APP_CONFIG, SERVER_CONFIG];
 
-exports = module.exports = [CLIENT_CONFIG, SERVER_CONFIG];
+exports.VENDOR_CONFIG     = VENDOR_CONFIG;
+exports.SERVER_CONFIG     = SERVER_CONFIG;
+exports.BROWSER_CONFIG    = BROWSER_CONFIG;
+exports.WORKER_CONFIG     = WORKER_CONFIG;
+exports.WORKER_APP_CONFIG = WORKER_APP_CONFIG;
+exports.TESTING_CONFIG    = TESTING_CONFIG;
 
-exports.CLIENT_CONFIG  = CLIENT_CONFIG;
-exports.SERVER_CONFIG  = SERVER_CONFIG;
-exports.TESTING_CONFIG = TESTING_CONFIG;
-exports.DEV_CONFIG     = DEV_CONFIG;
-    
-/**
- * TODO: HACK!! Remove it when it's' possible.
- * This is the way to share the same "vendor" chunk amoung browser main thread and
- * web worker thread. I don't want to have two different vendor chunks for each environment.
- * They whould be different only in a name of "webpack" callback: "webpackJsonp"" for main 
- * thred and "webpackChunk" for web workers.
- * Sync doesn't hurt here, 'run_worker_app' chunk will be compiled only once per watch.
- */
-function WorkWithWorkersPlugin() {
-  return { 
-    apply(compiler) {
-      compiler.plugin('done', function(stats) {
-        var fileSystem = compiler.outputFileSystem;
-        
-        // TODO: Need to think about a better way to do it
-        if (!fileSystem.readFileSync) {
-          fileSystem = fs;
-        }
-        
-        const workerChunk = stats.compilation.namedChunks['run_worker_app'];
-        const vendorChunk = stats.compilation.namedChunks['vendor'];
-        
-        if (workerChunk) {
-          const workerChunkPath = compiler.outputPath + '/' + workerChunk.files[0];
-          const workerContent = fileSystem.readFileSync(workerChunkPath, 'utf8');
-          
-          fileSystem.writeFileSync(workerChunkPath, workerContent.replace(
-/__webpack_require__\.e[\s\S]*?head.appendChild\(script\);[\s\/\*]*?\}[\s\/\*]*?\}/
-, `  
-/******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
-/******/ 		// "0" is the signal for "already loaded"
-/******/ 		if(installedChunks[chunkId] === 0) {
-/******/      return callback.call(null, __webpack_require__);
-/******/ 		}
-/******/    installedChunks[chunkId] = [callback];
-/******/ 		importScripts(location.origin + "/" + chunkId + ".chunk.js");
-/******/ 	};
-        `), { encoding: 'utf8' });
-        }
-        
-        if (vendorChunk) {
-          const vendorChunkPath = compiler.outputPath + '/' + vendorChunk.files[0];
-          const vendorContent = fileSystem.readFileSync(vendorChunkPath, 'utf8');
-          
-          fileSystem.writeFileSync(vendorChunkPath, vendorContent.replace(
-            'document.getElementsByTagName("script")' ,
-            'typeof document !== "undefined" ? $& : [{ getAttribute: function() { return "" } }]' 
-          ), { encoding: 'utf8' });
-        }
-      })
-    }
-  };
-}
+exports.STATS_OPTIONS = STATS_OPTIONS;
+exports.WATCH_OPTIONS = WATCH_OPTIONS;
+exports.DEV_OPTIONS   = DEV_OPTIONS;

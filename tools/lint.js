@@ -12,7 +12,7 @@ const EOL = os.EOL;
 const SRC_DIR = constants.SRC_DIR;
 const SUCCESS_MESSAGE = 'TSLint: Everything is OK';
 
-const watch = process.argv.indexOf('--watch') !== -1;
+const SHOULD_WATCH = process.argv.indexOf('--watch') !== -1;
 
 const watcher = chokidar.watch([
   SRC_DIR + '/**/*.ts'
@@ -45,7 +45,7 @@ function logFailedFiles(done) {
 
 function lintFile(path, contents) {
   const linter = new Linter(path, contents, {
-    formatter: 'verbose',
+    formatter: 'prose',
     configuration: tslintJson
   });
 
@@ -93,7 +93,7 @@ function checkFile(path) {
 }
 
 function ensureExit() {
-  if (!watch) {
+  if (!SHOULD_WATCH) {
     process.exit(failedFilesCount ? 2 : 0);
   }
 }

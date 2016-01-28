@@ -1,6 +1,6 @@
 {
   "name": "angular2-universal-starter",
-  "script": "./tools/boot.js",
+  "script": "./tools/prod.js",
   "watch": "./dist/private",
   "log_date_format": "YYYY-MM-DD HH:mm Z",
   "error_file": "./logs/errors.log",

@@ -1,3 +1,9 @@
+import 'es6-shim';
+import 'es6-promise';
+import 'reflect-metadata';
+import 'zone.js/lib/browser/zone-microtask';
+import 'zone.js/lib/browser/long-stack-trace-zone';
+
 import { platform, ComponentRef, Injector } from 'angular2/core';
 import { BROWSER_PROVIDERS, BROWSER_APP_PROVIDERS, } from 'angular2/platform/browser';
 import { ROUTER_PROVIDERS, Router } from 'angular2/router';

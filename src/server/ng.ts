@@ -8,11 +8,11 @@ const { selectorRegExpFactory } = require('angular2-universal-preview');
 const { renderToStringWithPreboot, selectorResolver } = require('angular2-universal-preview/dist/server/src/render');
 
 function reduceScripts(content, src) {
-  return `${content}<script type='text/javascript' src='${src}'></script>`;
+  return `${content}<script type="text/javascript" src="${src}"></script>`;
 }
 
-const WORKER_SCRIPTS  = ['run_worker.js',  'vendor.js', 'boot_worker.js'].reduce(reduceScripts, '');
-const BROWSER_SCRIPTS = ['run_browser.js', 'vendor.js', 'boot_browser.js'].reduce(reduceScripts, '');
+const WORKER_SCRIPTS  = [`${VENDOR_NAME}.js`, `${WORKER_NAME}.js`].reduce(reduceScripts, '');
+const BROWSER_SCRIPTS = [`${VENDOR_NAME}.js`, `${BROWSER_NAME}.js`].reduce(reduceScripts, '');
 
 const HTML_FILE = require('./ng.html');
 

@@ -13,9 +13,11 @@ declare const PORT: number;
 declare const HAS_SS: boolean;
 declare const HAS_WW: boolean;
 
-declare const SERVER_APP_NAME: string;
-declare const SERVER_APP_DIR: string;
-declare const SERVER_APP_PATH: string;
+declare const VENDOR_NAME: string;
+declare const SERVER_NAME: string;
+declare const BROWSER_NAME: string;
+declare const WORKER_NAME: string;
+declare const WORKER_APP_NAME: string;
 
 declare const NODE_MODULES: string[];
 

@@ -8,8 +8,9 @@ const constants = require('../constants');
 const HOST = constants.HOST;
 const PORT = constants.PORT;
 
-const SERVER_APP_PATH = constants.SERVER_APP_PATH;
+const PRIVATE_DIR = constants.PRIVATE_DIR;
+const SERVER_NAME = constants.SERVER_NAME;
 
-const app = require(SERVER_APP_PATH).app;
+const app = require(PRIVATE_DIR + '/' + SERVER_NAME).app;
 
 http.createServer(app).listen(PORT, HOST);
