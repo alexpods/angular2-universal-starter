@@ -86,10 +86,14 @@ exports.HAS_WW = 'NG2_WW' in process.env ? process.env.NG2_WW === 'true' : true;
 
 //...
 ```
+Then you need to restart the server to apply the changes:
+```bash
+# for production server
+npm restart
 
-If you're using a development server, you don't need to restart it. The development server will just make rebuild and apply new changes.
-
-If you're using a production server (`npm start`), you also don't need to restart it. Just rebuild your sources (`npm run build`, if `npm run build:watch` is running you don't need to do anything).
+# for development server - stop its process and run it again
+npm run dev
+```
 
 #Building
 ```bash
