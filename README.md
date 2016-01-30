@@ -7,9 +7,6 @@
 [![Issue Stats](http://issuestats.com/github/alexpods/angular2-universal-starter/badge/issue?style=flat-square)](http://issuestats.com/github/alexpods/angular2-universal-starter)
 [![Join the chat at https://gitter.im/alexpods/angular2-universal-starter](https://badges.gitter.im/alexpods/angular2-universal-starter.svg)](https://gitter.im/alexpods/angular2-universal-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Enjoy Server Side rendering and Web Workers in your Angular2 Application
-
-
 
 #What we've got here
 
