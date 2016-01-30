@@ -4,11 +4,12 @@
   },
   "devDependencies": {},
   "ambientDependencies": {
-    "node": "github:angular/DefinitelyTyped/node/node.d.ts",
-    "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts",
-    "serve-static": "github:implydata/pivot/typings/serve-static/serve-static.d.ts",
-    "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts",
     "es6-shim": "github:angular/DefinitelyTyped/es6-shim/es6-shim.d.ts",
+    "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts",
+    "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#26c98c8a9530c44f8c801ccc3b2057e2101187ee",
+    "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts",
+    "node": "github:angular/DefinitelyTyped/node/node.d.ts",
+    "serve-static": "github:implydata/pivot/typings/serve-static/serve-static.d.ts",
     "zone": "github:angular/DefinitelyTyped/zone/zone.d.ts"
   }
 }

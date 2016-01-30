@@ -1,5 +1,22 @@
-import { describe, it, expect, TestComponentBuilder, injectAsync, tick, fakeAsync } from 'angular2/testing';
+import {
+  describe,
+  it,
+  expect,
+  TestComponentBuilder,
+  injectAsync,
+  tick,
+  fakeAsync,
+  setBaseTestProviders
+} from 'angular2/testing';
+
+import {
+  TEST_BROWSER_PLATFORM_PROVIDERS,
+  TEST_BROWSER_APPLICATION_PROVIDERS
+} from 'angular2/platform/testing/browser';
+
 import { Home } from './home';
+
+setBaseTestProviders(TEST_BROWSER_PLATFORM_PROVIDERS, TEST_BROWSER_APPLICATION_PROVIDERS);
 
 describe('Home', () => {
   it('should change name to "Angular" after 1s', injectAsync([TestComponentBuilder], fakeAsync((tcb) => {

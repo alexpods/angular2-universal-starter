@@ -1,11 +1,15 @@
 import { Router, Request, Response } from 'express';
 import { provide } from 'angular2/core';
 import { PlatformLocation, APP_BASE_HREF, ROUTER_PROVIDERS } from 'angular2/router';
-import { REQUEST_URL, ServerPlatformLocation } from '../.patches/universal/router';
-import { App } from '../app/app';
+import {
+  REQUEST_URL,
+  SERVER_LOCATION_PROVIDERS,
+  selectorResolver,
+  selectorRegExpFactory,
+  renderToStringWithPreboot
+} from 'angular2-universal-preview';
 
-const { selectorRegExpFactory } = require('angular2-universal-preview');
-const { renderToStringWithPreboot, selectorResolver } = require('angular2-universal-preview/dist/server/src/render');
+import { App } from '../app/app';
 
 function reduceScripts(content, src) {
   return `${content}<script type="text/javascript" src="${src}"></script>`;
@@ -26,7 +30,7 @@ export function renderComponent(html, component, providers, prebootOptions) {
 
 const PROVIDERS = [
   ROUTER_PROVIDERS,
-  provide(PlatformLocation, { useClass: ServerPlatformLocation }),
+  SERVER_LOCATION_PROVIDERS,
   provide(APP_BASE_HREF, { useValue: '/' }),
 ];
 
