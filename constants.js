@@ -12,7 +12,7 @@ exports.HOST = process.env.HOST || 'localhost';
 exports.PORT = +process.env.PORT || 3000;
 
 exports.HAS_SS = 'NG2_SS' in process.env ? process.env.NG2_SS === 'true' : true;
-exports.HAS_WW = 'NG2_WW' in process.env ? process.env.NG2_WW === 'true' : true;
+exports.HAS_WW = 'NG2_WW' in process.env ? process.env.NG2_WW === 'true' : false;
 
 exports.VENDOR_NAME     = 'vendor';
 exports.SERVER_NAME     = 'server';

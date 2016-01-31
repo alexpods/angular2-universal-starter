@@ -131,6 +131,7 @@ const VENDOR_CONFIG = {
 
 const BROWSER_CONFIG = {
   target: 'web',
+  devtool: 'inline-source-map',
   entry: {
     [BROWSER_NAME]: [
       BROWSER_SOURCE_PATH
@@ -247,7 +248,33 @@ const TESTING_CONFIG = {
   }
 };
 
-exports = module.exports = [VENDOR_CONFIG, BROWSER_CONFIG, WORKER_CONFIG, WORKER_APP_CONFIG, SERVER_CONFIG];
+const BENCH_CONFIG = {
+  target: 'node',
+  entry: {
+    renderComponent: './bench/renderComponent.ts'
+  },
+  output: {
+    path: path.resolve(ROOT_DIR, 'bench/dist'),
+    filename: '[name].js',
+    library: '[name]',
+    libraryTarget: 'commonjs2'
+  },
+  node: {
+    __dirname:  true,
+    __filename: true
+  },
+  externals: [
+    NODE_MODULES.map(function(name) { return new RegExp('^' + name) }),
+  ],
+  resolve: {
+    extensions: ['', '.ts', '.js']
+  },
+  module: {
+    loaders: LOADERS
+  }
+};
+
+exports = module.exports = [BENCH_CONFIG];
 
 exports.VENDOR_CONFIG     = VENDOR_CONFIG;
 exports.SERVER_CONFIG     = SERVER_CONFIG;

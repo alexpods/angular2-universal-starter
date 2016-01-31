@@ -51,6 +51,7 @@
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.33.3",
     "express": "^4.13.3",
+    "lodash": "^4.1.0",
     "parse5": "^1.5.1",
     "preboot": "1.1.0",
     "reflect-metadata": "0.1.2",
@@ -59,6 +60,7 @@
     "zone.js": "0.5.10"
   },
   "devDependencies": {
+    "benchmark": "^2.1.0",
     "chalk": "^1.1.1",
     "chokidar": "^1.4.2",
     "jasmine-core": "^2.4.1",

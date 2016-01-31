@@ -4,3 +4,4 @@ logs
 typings
 npm-debug.log
 test.sh
+bench/dist
