@@ -78,11 +78,17 @@ const LOADERS = [{
   loader: 'raw'
 }, {
   test: /\.css$/,
-  loader: 'raw'
+  loaders: ['raw', 'postcss']
 }, {
   test: /\.json$/,
   loader: 'json'
 }];
+
+const POSTCSS = function() {
+  return [
+    require('postcss-cssnext')
+  ]
+}
 
 const DEFINE_CONSTANTS_PLUGIN = new DefinePlugin((function stringifyConstants() {
   const stringifiedConstants = {};
@@ -149,7 +155,8 @@ const BROWSER_CONFIG = {
   },
   module: {
     loaders: LOADERS
-  }
+  },
+  postcss: POSTCSS
 };
 
 const WORKER_CONFIG = {
@@ -173,7 +180,8 @@ const WORKER_CONFIG = {
   },
   module: {
     loaders: LOADERS
-  }
+  },
+  postcss: POSTCSS
 };
 
 const WORKER_APP_CONFIG = {
@@ -199,7 +207,8 @@ const WORKER_APP_CONFIG = {
   },
   module: {
     loaders: LOADERS
-  }
+  },
+  postcss: POSTCSS
 };
 
 const SERVER_CONFIG = {
@@ -231,7 +240,8 @@ const SERVER_CONFIG = {
   },
   module: { 
     loaders: LOADERS
-  }
+  },
+  postcss: POSTCSS
 };
 
 const TESTING_CONFIG = {
