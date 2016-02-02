@@ -10,12 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "files": [
-    "typings.d.ts",
-    "src/boot_browser.ts",
-    "src/boot_worker.ts",
-    "src/boot_worker_app.ts",
-    "src/server/app.ts",
-    "test/unit.spec.ts"
+  "exclude": [
+    "node_modules"
   ]
 }

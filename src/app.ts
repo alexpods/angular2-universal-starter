@@ -1,12 +1,21 @@
-import * as serveStatic from 'serve-static';
 import * as express from 'express';
+import * as serveStatic from 'serve-static';
 import { Request, Response } from 'express';
-import { router as ngRouter } from './ng';
+import { serveUniversal } from './.utils/serve';
 
 const app = express();
 
-app.use('/', serveStatic(PUBLIC_DIR));
-app.use('/', ngRouter);
+app.use('/', serveStatic(__PUBLIC_DIR__));
+
+__APPS__.forEach((options) => {
+  const appName = options.name;
+  const appPath = options.path;
+  const appUrlPrefix = options.urlPrefix || '/' + appName;
+  
+  app.use(appUrlPrefix, __non_webpack_require__(appPath).createRouter({
+    serveUniversal: (indexHtml, options) => serveUniversal(appName, indexHtml, options)
+  }));
+});
 
 /**
  * 404 Not Found
@@ -22,7 +31,7 @@ app.use((req: Request, res: Response, next: Function) => {
  * Errors normalization
  */
 app.use((err: any, req: Request, res: Response, next: Function) => {
-  const status: number = err.status || 500;
+  const status: number = err.staus || 500;
 
   let stack: string = err.message;
   let message: string = err.stack;

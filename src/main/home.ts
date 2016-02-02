@@ -1,5 +1,3 @@
-declare var require: any;
-
 import { Component } from 'angular2/core';
 import { NgIf } from 'angular2/common';
 
@@ -10,7 +8,7 @@ import { NgIf } from 'angular2/common';
   styles: [require('./home.css')]
 })
 export class Home {
-  name = 'World';
+  name = 'World2';
   messagePreboot = '';
   messageLazyLoading = '';
 

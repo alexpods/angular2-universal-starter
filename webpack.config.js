@@ -1,34 +1,17 @@
-const webpack   = require('webpack');
-const fs        = require('fs');
-const path      = require('path');
-const constants = require('./constants');
+const webpack = require('webpack');
+const fs      = require('fs');
+const path    = require('path');
+const consts  = require('./constants');
 
 const DefinePlugin       = webpack.DefinePlugin;
 const DllPlugin          = webpack.DllPlugin;
 const DllReferencePlugin = webpack.DllReferencePlugin;
 
-const ROOT_DIR    = constants.ROOT_DIR;
-const SRC_DIR     = constants.SRC_DIR;
-const PUBLIC_DIR  = constants.PUBLIC_DIR;
-const PRIVATE_DIR = constants.PRIVATE_DIR;
-
-const VENDOR_NAME     = constants.VENDOR_NAME;
-const SERVER_NAME     = constants.SERVER_NAME;
-const BROWSER_NAME    = constants.BROWSER_NAME;
-const WORKER_NAME     = constants.WORKER_NAME;
-const WORKER_APP_NAME = constants.WORKER_APP_NAME;
-
-const SERVER_SOURCE_PATH     = constants.SERVER_SOURCE_PATH;
-const BROWSER_SOURCE_PATH    = constants.BROWSER_SOURCE_PATH;
-const WORKER_SOURCE_PATH     = constants.WORKER_SOURCE_PATH;
-const WORKER_APP_SOURCE_PATH = constants.WORKER_APP_SOURCE_PATH;
-
-const VENDOR_DLL_MANIFEST_FILE = constants.VENDOR_DLL_MANIFEST_FILE;
-const VENDOR_DLL_MANIFEST_PATH = constants.VENDOR_DLL_MANIFEST_PATH;
-
-const NODE_MODULES = fs.readdirSync(ROOT_DIR + '/node_modules').filter(function(name) {
+const NODE_MODULES = fs.readdirSync(consts.ROOT_DIR + '/node_modules').filter(function(name) {
   return name != '.bin';
 });
+
+const SERVER_EXTERNALS = NODE_MODULES.map(function(name) { return new RegExp('^' + name) });
 
 const STATS_OPTIONS = {
   colors: {
@@ -90,158 +73,174 @@ const POSTCSS = function() {
   ]
 }
 
-const DEFINE_CONSTANTS_PLUGIN = new DefinePlugin((function stringifyConstants() {
+const RUN_BROWSER_PATH    = path.resolve(consts.SRC_DIR, '.utils/run_browser.ts');
+const RUN_WORKER_UI_PATH  = path.resolve(consts.SRC_DIR, '.utils/run_worker_ui.ts');
+const RUN_WORKER_APP_PATH = path.resolve(consts.SRC_DIR, '.utils/run_worker_app.ts');
+
+const POLIFILLS = [
+  'es6-shim',
+  'es6-promise',
+  'reflect-metadata',
+  'zone.js/dist/zone-microtask',
+  'zone.js/dist/long-stack-trace-zone',
+];
+
+const CONSTANTS_DEFINE_PLUGIN = new DefinePlugin((function() {
   const stringifiedConstants = {};
   
-  Object.keys(constants).forEach(function(constantName) {
-    stringifiedConstants[constantName] = JSON.stringify(constants[constantName]);    
+  Object.keys(consts).forEach(function(constantName) {
+    stringifiedConstants['__' + constantName + '__'] = JSON.stringify(consts[constantName]);    
   });
-  
+
   return stringifiedConstants;
 })());
 
 const VENDOR_DLL_REFERENCE_PLUGIN = new DllReferencePlugin({
-  context: ROOT_DIR,
+  context: consts.ROOT_DIR,
   sourceType: 'var',
   get manifest() {
-    return require(VENDOR_DLL_MANIFEST_PATH);
+    return require(path.resolve(consts.MANIFESTS_DIR, consts.VENDOR_BUNDLE_NAME + '.json'));
   }
 });
 
 const VENDOR_CONFIG = {
   target: 'web',
   entry: {
-    [VENDOR_NAME]: [
+    [consts.VENDOR_BUNDLE_NAME]: [
       'es6-shim',
       'es6-promise',
       'reflect-metadata',
       'zone.js/dist/zone-microtask',
       'zone.js/dist/long-stack-trace-zone',
       'angular2/core',
-      'angular2/router',
+      'angular2/router'
     ]
   },
   output: {
-    path: PUBLIC_DIR,
+    path: consts.PUBLIC_DIR,
     filename: '[name].js',
-    library: VENDOR_NAME,
+    library: '[name]',
     libraryTarget: 'var'
   },
   plugins: [
     new DllPlugin({
-      name: VENDOR_NAME,
-      path: VENDOR_DLL_MANIFEST_PATH
+      name: consts.VENDOR_BUNDLE_NAME,
+      path: path.resolve(consts.MANIFESTS_DIR, consts.VENDOR_BUNDLE_NAME + '.json')
     })
   ]
 };
 
-const BROWSER_CONFIG = {
-  target: 'web',
-  entry: {
-    [BROWSER_NAME]: [
-      BROWSER_SOURCE_PATH
-    ]
-  },
-  output: {
-    path: PUBLIC_DIR,
-    filename: '[name].js',
-    chunkFilename: '[id].' + BROWSER_NAME + '.js',
-  },
-  plugins: [
-    VENDOR_DLL_REFERENCE_PLUGIN
-  ],
-  resolve: {
-    extensions: ['', '.ts', '.js']
-  },
-  module: {
-    loaders: LOADERS
-  },
-  postcss: POSTCSS
-};
-
-const WORKER_CONFIG = {
-  target: 'web',
-  entry: {
-    [WORKER_NAME]: [
-      WORKER_SOURCE_PATH
-    ]
-  },
-  output: {
-    path: PUBLIC_DIR, 
-    filename: '[name].js',
-    chunkFilename: '[id].' + WORKER_NAME + '.js',
-  },
-  plugins: [
-    VENDOR_DLL_REFERENCE_PLUGIN,
-    DEFINE_CONSTANTS_PLUGIN,
-  ],
-  resolve: {
-    extensions: ['', '.ts', '.js']
-  },
-  module: {
-    loaders: LOADERS
-  },
-  postcss: POSTCSS
-};
-
-const WORKER_APP_CONFIG = {
-  target: 'webworker',
-  entry: {
-    [WORKER_APP_NAME]: [
-      WORKER_APP_SOURCE_PATH
-    ]
-  },
-  output: {
-    path: PUBLIC_DIR,
-    filename: '[name].js',
-    chunkFilename: '[id].' + WORKER_APP_NAME + '.js'
-  },
-  get plugins() {
-    return [
+function createServerConfig(appName, sourcePath) {
+  return {
+    target: 'node',
+    entry: {
+      [consts.APPS_SERVER_BUNDLE_NAME]: POLIFILLS.concat(sourcePath)
+    },
+    output: {
+      path: consts.PRIVATE_DIR,
+      filename: appName + '-[name].js',
+      chunkFilename: appName + '-' + consts.APPS_SERVER_BUNDLE_NAME + '-[id].js',
+      library: '[name]',
+      libraryTarget: 'commonjs2'
+    },
+    plugins: [
       VENDOR_DLL_REFERENCE_PLUGIN,
-      DEFINE_CONSTANTS_PLUGIN,
-    ];
-  } ,
-  resolve: {
-    extensions: ['', '.ts', '.js']
-  },
-  module: {
-    loaders: LOADERS
-  },
-  postcss: POSTCSS
-};
+      CONSTANTS_DEFINE_PLUGIN
+    ],
+    node: {
+      __dirname:  true,
+      __filename: true
+    },
+    externals: SERVER_EXTERNALS,
+    resolve: {
+      extensions: ['', '.ts', '.js']
+    },
+    module: { 
+      loaders: LOADERS
+    },
+    postcss: POSTCSS
+  }; 
+}
 
-const SERVER_CONFIG = {
-  target: 'node',
-  entry: {
-    [SERVER_NAME]: [
-      SERVER_SOURCE_PATH
-    ]
-  },
-  output: {
-    path: PRIVATE_DIR,
-    filename: '[name].js',
-    chunkFilename: '[id].' + SERVER_NAME + '.js',
-    library: SERVER_NAME,
-    libraryTarget: 'commonjs2'
-  },
-  plugins: [
-    DEFINE_CONSTANTS_PLUGIN
-  ],
-  node: {
-    __dirname:  true,
-    __filename: true
-  },
-  externals: [
-    NODE_MODULES.map(function(name) { return new RegExp('^' + name) }),
-  ],
-  resolve: {
-    extensions: ['', '.ts', '.js']
-  },
-  module: { 
-    loaders: LOADERS
-  },
-  postcss: POSTCSS
+function createBrowserConfig(appName, sourcePath) {
+  return {
+    target: 'web',
+    entry: {
+      [consts.APPS_BROWSER_BUNDLE_NAME]: POLIFILLS.concat(RUN_BROWSER_PATH, sourcePath)
+    },
+    output: {
+      path: consts.PUBLIC_DIR,
+      filename: appName + '-[name].js',
+      chunkFilename: appName + '-' + consts.APPS_BROWSER_BUNDLE_NAME + '-[id].js',
+      library: '[name]',
+      libraryTarget: 'var'
+    },
+    plugins: [
+      VENDOR_DLL_REFERENCE_PLUGIN,
+      CONSTANTS_DEFINE_PLUGIN
+    ],
+    resolve: {
+      extensions: ['', '.ts', '.js']
+    },
+    module: {
+      loaders: LOADERS
+    },
+    postcss: POSTCSS
+  };
+}
+
+function createWorkerUiConfig(appName, sourcePath) {
+  return {
+    target: 'web',
+    entry: {
+      [consts.APPS_WORKER_UI_BUNDLE_NAME]: POLIFILLS.concat(RUN_WORKER_UI_PATH, sourcePath)
+    },
+    output: {
+      path: consts.PUBLIC_DIR,
+      filename: appName + '-[name].js',
+      chunkFilename: appName + '-' + consts.APPS_WORKER_UI_BUNDLE_NAME + '-[id].js',
+      library: '[name]',
+      libraryTarget: 'var'
+    },
+    plugins: [
+      VENDOR_DLL_REFERENCE_PLUGIN,
+      CONSTANTS_DEFINE_PLUGIN
+    ],
+    resolve: {
+      extensions: ['', '.ts', '.js']
+    },
+    module: {
+      loaders: LOADERS
+    },
+    postcss: POSTCSS
+  };
+}
+
+function createWorkerAppConfig(appName, sourcePath) {
+  return {
+    target: 'webworker',
+    entry: {
+      [consts.APPS_WORKER_APP_BUNDLE_NAME]: POLIFILLS.concat(RUN_WORKER_APP_PATH, sourcePath)
+    },
+    output: {
+      path: consts.PUBLIC_DIR,
+      filename: appName + '-[name].js',
+      chunkFilename: appName + '-' + consts.APPS_WORKER_APP_BUNDLE_NAME + '-[id].js',
+      library: '[name]',
+      libraryTarget: 'var'      
+    },
+    plugins: [
+      VENDOR_DLL_REFERENCE_PLUGIN,
+      CONSTANTS_DEFINE_PLUGIN
+    ],
+    resolve: {
+      extensions: ['', '.ts', '.js']
+    },
+    module: {
+      loaders: LOADERS
+    },
+    postcss: POSTCSS
+  };
 };
 
 const TESTING_CONFIG = {
@@ -257,14 +256,60 @@ const TESTING_CONFIG = {
   }
 };
 
-exports = module.exports = [VENDOR_CONFIG, BROWSER_CONFIG, WORKER_CONFIG, WORKER_APP_CONFIG, SERVER_CONFIG];
+const APPS_CONFIGS = [];
+
+consts.APPS.map(function(options) {
+  const appName = options.name;
+  const appPath = options.path;
+  const appDir  = path.dirname(appPath)
+
+  const APP_CONFIGS = require(appPath).createBuilds({
+    createServerConfig: function(sourcePath) { 
+      return createServerConfig(appName, path.resolve(appDir, sourcePath));
+    },
+    createBrowserConfig: function(sourcePath) { 
+      return createBrowserConfig(appName, path.resolve(appDir, sourcePath));
+    },
+    createWorkerUiConfig: function(sourcePath) { 
+      return createWorkerUiConfig(appName, path.resolve(appDir, sourcePath));
+    },
+    createWorkerAppConfig: function(sourcePath) { 
+      return createWorkerAppConfig(appName, path.resolve(appDir, sourcePath));
+    }
+  });
+  
+  [].push.apply(APPS_CONFIGS, APP_CONFIGS);
+});
+
+const MASTER_APP_CONFIG = {
+  target: 'node',
+  entry: {
+    [consts.MASTER_APP_BUNDLE_NAME]: POLIFILLS.concat(consts.MASTER_APP_SOURCE_PATH)
+  },
+  output: {
+    path: consts.PRIVATE_DIR,
+    filename: '[name].js',
+    library: '[name]',
+    libraryTarget: 'commonjs2'
+  },
+  plugins: [].concat(
+    CONSTANTS_DEFINE_PLUGIN
+  ),
+  resolve: {
+    extensions: ['', '.ts', '.js']
+  },
+  module: { 
+    loaders: LOADERS
+  },
+  externals: SERVER_EXTERNALS,
+  postcss: POSTCSS
+};
 
 exports.VENDOR_CONFIG     = VENDOR_CONFIG;
-exports.SERVER_CONFIG     = SERVER_CONFIG;
-exports.BROWSER_CONFIG    = BROWSER_CONFIG;
-exports.WORKER_CONFIG     = WORKER_CONFIG;
-exports.WORKER_APP_CONFIG = WORKER_APP_CONFIG;
+exports.MASTER_APP_CONFIG = MASTER_APP_CONFIG;
 exports.TESTING_CONFIG    = TESTING_CONFIG;
+
+exports.APPS_CONFIGS = APPS_CONFIGS;
 
 exports.STATS_OPTIONS = STATS_OPTIONS;
 exports.WATCH_OPTIONS = WATCH_OPTIONS;

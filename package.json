@@ -15,6 +15,7 @@
     "prod": "node tools/prod.js",
     "prebuild": "npm run clean:dist",
     "build": "node tools/build.js",
+    "prebuild:watch": "npm run clean:dist",
     "build:watch": "node tools/build.js --watch",
     "lint": "node tools/lint.js",
     "lint:watch": "node tools/lint.js --watch",
@@ -47,6 +48,7 @@
   "dependencies": {
     "angular2": "2.0.0-beta.3",
     "angular2-universal-preview": "0.50.0",
+    "basic-auth-connect": "^1.0.0",
     "css": "^2.2.1",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.33.3",
