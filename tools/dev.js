@@ -66,7 +66,7 @@ function recompileApp(content) {
   return module_.exports.app; 
 }
 
-function runDevServer(configs, options) {  
+function runDevServer() {  
   var app;
   
   const compiler = Object.create(webpack(configsList), { outputPath: { value: PUBLIC_DIR }});
@@ -104,13 +104,7 @@ webpack(VENDOR_CONFIG, function(error, stats) {
     throw error;
   }
 
-  if (HAS_WW) {
-    addDevClientScript(WORKER_CONFIG);
-    runDevServer([ SERVER_CONFIG, WORKER_CONFIG, WORKER_APP_CONFIG ], DEV_OPTIONS);
-  } else {
-    addDevClientScript(BROWSER_CONFIG);
-    runDevServer([ SERVER_CONFIG, BROWSER_CONFIG ], DEV_OPTIONS);
-  }
+  runDevServer();
 });
 
 
