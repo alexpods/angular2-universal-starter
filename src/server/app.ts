@@ -22,7 +22,7 @@ app.use((req: Request, res: Response, next: Function) => {
  * Errors normalization
  */
 app.use((err: any, req: Request, res: Response, next: Function) => {
-  const status: number = err.staus || 500;
+  const status: number = err.status || 500;
 
   let stack: string = err.message;
   let message: string = err.stack;
