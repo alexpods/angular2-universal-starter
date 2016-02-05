@@ -1,16 +1,16 @@
 import 'es6-shim';
 import 'es6-promise';
 import 'reflect-metadata';
-import 'zone.js/lib/browser/zone-microtask';
-import 'zone.js/lib/browser/long-stack-trace-zone';
+import 'zone.js/dist/zone-microtask';
+import 'zone.js/dist/long-stack-trace-zone';
 
 import { platform, provide } from 'angular2/core';
-import { WORKER_RENDER_APP_ROUTER } from './.patches/worker/ui';
 import {
   WebWorkerInstance,
   WORKER_RENDER_APP,
   WORKER_RENDER_PLATFORM,
-  WORKER_SCRIPT
+  WORKER_SCRIPT,
+  WORKER_RENDER_ROUTER
 } from 'angular2/platform/worker_render';
 
 const workerScriptUrl = URL.createObjectURL(new Blob([`
@@ -37,7 +37,7 @@ const workerScriptUrl = URL.createObjectURL(new Blob([`
 
 const appRef = platform(WORKER_RENDER_PLATFORM).application([
   WORKER_RENDER_APP,
-  WORKER_RENDER_APP_ROUTER,
+  WORKER_RENDER_ROUTER,
   provide(WORKER_SCRIPT, { useValue: workerScriptUrl })
 ]);
 

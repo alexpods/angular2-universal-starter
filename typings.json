@@ -4,12 +4,11 @@
   },
   "devDependencies": {},
   "ambientDependencies": {
-    "es6-shim": "github:angular/DefinitelyTyped/es6-shim/es6-shim.d.ts",
-    "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts",
+    "es6-shim": "github:DefinitelyTyped/DefinitelyTyped/es6-shim/es6-shim.d.ts#6697d6f7dadbf5773cb40ecda35a76027e0783b2",
+    "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#f743b7f4955076199e2252ace18b01e33280db69",
     "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#26c98c8a9530c44f8c801ccc3b2057e2101187ee",
-    "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts",
-    "node": "github:angular/DefinitelyTyped/node/node.d.ts",
-    "serve-static": "github:implydata/pivot/typings/serve-static/serve-static.d.ts",
-    "zone": "github:angular/DefinitelyTyped/zone/zone.d.ts"
+    "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#cb5206a8ac1c9a3ddfd126f5ecea6729b2361452",
+    "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#0fa4e9e61385646ea6a4cba2aef357353d2ce77f",
+    "zone.js": "github:DefinitelyTyped/DefinitelyTyped/zone.js/zone.js.d.ts#b923a5aaf013ac84c566f27ba6b5843211981c7a"
   }
 }
