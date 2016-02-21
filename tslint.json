@@ -22,7 +22,6 @@
       "variables-before-functions"
     ],
     "no-any": false,
-    "no-args": true,
     "no-bitwise": false,
     "no-conditional-assignment": false,
     "no-consecutive-blank-lines": true,
@@ -57,7 +56,6 @@
     "quotemark": [true, "single"],
     "radix": true,
     "semicolon": true,
-    "no-trailing-comma": true,
     "triple-equals": true,
     "variable-name": false,
     "whitespace": [
