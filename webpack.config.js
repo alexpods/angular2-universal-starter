@@ -53,8 +53,8 @@ const WATCH_OPTIONS = {
 };
 
 const DEV_OPTIONS = {
-  contentBase: false, 
-  queit: false, 
+  contentBase: false,
+  queit: false,
   noInfo: false,
   stats: STATS_OPTIONS
 };
@@ -92,11 +92,11 @@ const POSTCSS = function() {
 
 const DEFINE_CONSTANTS_PLUGIN = new DefinePlugin((function stringifyConstants() {
   const stringifiedConstants = {};
-  
+
   Object.keys(constants).forEach(function(constantName) {
-    stringifiedConstants[constantName] = JSON.stringify(constants[constantName]);    
+    stringifiedConstants[constantName] = JSON.stringify(constants[constantName]);
   });
-  
+
   return stringifiedConstants;
 })());
 
@@ -115,7 +115,7 @@ const VENDOR_CONFIG = {
       'es6-shim',
       'es6-promise',
       'reflect-metadata',
-      'zone.js/dist/zone-microtask',
+      'zone.js/dist/zone',
       'zone.js/dist/long-stack-trace-zone',
       'angular2/core',
       'angular2/router',
@@ -167,7 +167,7 @@ const WORKER_CONFIG = {
     ]
   },
   output: {
-    path: PUBLIC_DIR, 
+    path: PUBLIC_DIR,
     filename: '[name].js',
     chunkFilename: '[id].' + WORKER_NAME + '.js',
   },
@@ -238,7 +238,7 @@ const SERVER_CONFIG = {
   resolve: {
     extensions: ['', '.ts', '.js']
   },
-  module: { 
+  module: {
     loaders: LOADERS
   },
   postcss: POSTCSS

@@ -3,17 +3,17 @@ language: node_js
 node_js:
   - 4.2.0
   - 5.4.0
-  
+
 before_install:
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
   - sudo apt-get update
-  - sudo apt-get install -y libappindicator1 fonts-liberation 
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - sudo apt-get install -y libappindicator1 fonts-liberation
+  - wget http://mirror.pcbeta.com/google/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_47.0.2526.80-1_amd64.deb
   - sudo dpkg -i google-chrome*.deb
   - npm install semver
-  - export NPM_V=$(npm -v) 
+  - export NPM_V=$(npm -v)
   - 'if node -e "process.exit(require(''semver'').gt(process.env.NPM_V, ''3.0.0''))"; then npm install -g npm@3.0.0; fi'
 
 install:
@@ -21,31 +21,31 @@ install:
 
 before_script:
   - "npm run webdriver:start &"
-  
+
 script:
   - npm run lint
-  
+
   - npm start
   - npm run unit
   - npm stop
-  
+
   - "kill $(lsof -t -i:3000) | true"
 
   - NG2_WW=true  NG2_SS=true  $(npm bin)/pm2 start ecosystem.json
   - npm run e2e
-  - $(npm bin)/pm2 delete ecosystem.json; 
+  - $(npm bin)/pm2 delete ecosystem.json;
 
   - "kill $(lsof -t -i:3000) | true"
 
   - NG2_WW=false NG2_SS=true  $(npm bin)/pm2 start ecosystem.json
   - npm run e2e
-  - $(npm bin)/pm2 delete ecosystem.json; 
+  - $(npm bin)/pm2 delete ecosystem.json;
 
   - "kill $(lsof -t -i:3000) | true"
 
   - NG2_WW=false NG2_SS=false $(npm bin)/pm2 start ecosystem.json
   - npm run e2e
-  - $(npm bin)/pm2 delete ecosystem.json; 
+  - $(npm bin)/pm2 delete ecosystem.json;
 
   - "kill $(lsof -t -i:3000) | true"
 
@@ -54,7 +54,7 @@ script:
   - sleep 5
   - npm run e2e
   - kill $DEV_SERVER_PID
-  
+
   - "kill $(lsof -t -i:3000) | true"
 
   - "NG2_WW=false NG2_SS=true npm run dev &"
@@ -62,7 +62,7 @@ script:
   - sleep 5
   - npm run e2e
   - kill $DEV_SERVER_PID
-  
+
   - "kill $(lsof -t -i:3000) | true"
 
   - "NG2_WW=false NG2_SS=false npm run dev &"
@@ -70,7 +70,7 @@ script:
   - sleep 5
   - npm run e2e
   - kill $DEV_SERVER_PID
-  
+
   - "kill $(lsof -t -i:3000) | true"
 
   - npm restart

@@ -3,16 +3,21 @@ import { provide } from 'angular2/core';
 import { PlatformLocation, APP_BASE_HREF, ROUTER_PROVIDERS } from 'angular2/router';
 import {
   REQUEST_URL,
-  SERVER_LOCATION_PROVIDERS,
+  NODE_LOCATION_PROVIDERS,
+  ORIGIN_URL,
   selectorResolver,
   selectorRegExpFactory,
   renderToStringWithPreboot
-} from 'angular2-universal-preview';
+} from 'angular2-universal';
 
 import { App } from '../app/app';
 
 function reduceScripts(content, src) {
   return `${content}<script type="text/javascript" src="${src}"></script>`;
+}
+
+function getBaseUrlFromRequest(request: Request): string {
+  return `${request.protocol}://${request.get('HOST')}/`;
 }
 
 const WORKER_SCRIPTS  = [`${VENDOR_NAME}.js`, `${WORKER_NAME}.js`].reduce(reduceScripts, '');
@@ -30,7 +35,7 @@ export function renderComponent(html, component, providers, prebootOptions) {
 
 const PROVIDERS = [
   ROUTER_PROVIDERS,
-  SERVER_LOCATION_PROVIDERS,
+  NODE_LOCATION_PROVIDERS,
   provide(APP_BASE_HREF, { useValue: '/' }),
 ];
 
@@ -44,7 +49,8 @@ router.get('/*', (req: Request, res: Response, next: Function) => {
     .then(() => {
       if (HAS_SS) {
         const REQUEST_PROVIDERS = [
-          provide(REQUEST_URL,  { useValue: req.originalUrl })
+          provide(REQUEST_URL, { useValue: req.originalUrl }),
+          provide(ORIGIN_URL, { useValue: getBaseUrlFromRequest(req) })
         ];
 
         return renderComponent(HTML_FILE, App, [PROVIDERS, REQUEST_PROVIDERS], PREBOOT);

@@ -4,7 +4,7 @@ declare var __karma__: any;
 import 'es6-shim';
 import 'es6-promise';
 import 'reflect-metadata';
-import 'zone.js/dist/zone-microtask';
+import 'zone.js/dist/zone';
 import 'zone.js/dist/long-stack-trace-zone';
 import 'zone.js/dist/jasmine-patch.js';
 import 'angular2/core';
@@ -15,8 +15,8 @@ const opts = args[0];
 
 const testsContext = require.context('../src', true, /\.spec\.ts/);
 
-var modules = testsContext.keys();
-var testPath = opts.testPath;
+let modules = testsContext.keys();
+let testPath = opts.testPath;
 
 if (testPath) {
   testPath = './' + testPath.slice(4);

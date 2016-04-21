@@ -10,6 +10,7 @@ exports.SERVER_DIR  = path.resolve(exports.SRC_DIR,  'server');
 
 exports.HOST = process.env.HOST || 'localhost';
 exports.PORT = +process.env.PORT || 3000;
+exports.PROTOCOL = process.env.PROTOCOL || 'http';
 
 exports.HAS_SS = 'NG2_SS' in process.env ? process.env.NG2_SS === 'true' : true;
 exports.HAS_WW = 'NG2_WW' in process.env ? process.env.NG2_WW === 'true' : true;
@@ -28,11 +29,11 @@ exports.WORKER_APP_SOURCE_PATH = path.resolve(exports.SRC_DIR, 'boot_worker_app.
 exports.VENDOR_DLL_MANIFEST_FILE = 'vendor-manifest.json';
 exports.VENDOR_DLL_MANIFEST_PATH = path.resolve(exports.PUBLIC_DIR, exports.VENDOR_DLL_MANIFEST_FILE);
 
-exports.PREBOOT = { 
-  appRoot: 'app', 
+exports.PREBOOT = {
+  appRoot: 'app',
   freeze:  { name: 'spinner' },
   replay:  'rerender',
-  buffer:  true, 
-  debug:   true, 
+  buffer:  true,
+  debug:   true,
   uglify:  false,
 };
