@@ -10,7 +10,7 @@ before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
   - sudo apt-get update
   - sudo apt-get install -y libappindicator1 fonts-liberation
-  - wget http://mirror.pcbeta.com/google/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_47.0.2526.80-1_amd64.deb
+  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
   - npm install semver
   - export NPM_V=$(npm -v)
