@@ -41,8 +41,8 @@ const STATS_OPTIONS = {
   cachedAssets: false,
   modules: true,
   chunks: false,
-  reasons: false,
-  errorDetails: false,
+  reasons: true,
+  errorDetails: true,
   chunkOrigins: false,
   exclude: ['node_modules']
 };
@@ -67,7 +67,10 @@ const LOADERS = [{
       2403, // 2403 -> Subsequent variable declarations
       2300, // 2300 -> Duplicate identifier
       2374, // 2374 -> Duplicate number index signature
-      2375, // 2375 -> Duplicate string index signature
+      2375, // 2375 -> Duplicate string index signature,
+      2435,
+      2436,
+      2502
     ]
   },
   exclude: [
@@ -117,8 +120,11 @@ const VENDOR_CONFIG = {
       'reflect-metadata',
       'zone.js/dist/zone',
       'zone.js/dist/long-stack-trace-zone',
-      'angular2/core',
-      'angular2/router',
+      '@angular/core',
+      '@angular/common',
+      '@angular/platform-browser',
+      '@angular/platform-browser-dynamic',
+      '@angular/http',
     ]
   },
   output: {
