@@ -3,23 +3,15 @@ import {
   it,
   expect,
   TestComponentBuilder,
-  injectAsync,
+  inject,
   tick,
   fakeAsync,
-  setBaseTestProviders
-} from 'angular2/testing';
-
-import {
-  TEST_BROWSER_PLATFORM_PROVIDERS,
-  TEST_BROWSER_APPLICATION_PROVIDERS
-} from 'angular2/platform/testing/browser';
+} from '@angular/core/testing';
 
 import { Home } from './home';
 
-setBaseTestProviders(TEST_BROWSER_PLATFORM_PROVIDERS, TEST_BROWSER_APPLICATION_PROVIDERS);
-
 describe('Home', () => {
-  it('should change name to "Angular" after 1s', injectAsync([TestComponentBuilder], fakeAsync((tcb) => {
+  it('should change name to "Angular" after 1s', fakeAsync(inject([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(Home).then((fixture) => {
       const { componentInstance } = fixture;
       expect(componentInstance.name).toBe('World');
@@ -28,17 +20,16 @@ describe('Home', () => {
     });
   })));
 
-  it('should set message on button click', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should set message on button click', inject([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(Home).then((fixture) => {
       const { componentInstance, nativeElement } = fixture;
-
       expect(componentInstance.messagePreboot).toBeFalsy();
       nativeElement.querySelector('#check-preboot').click();
       expect(componentInstance.messagePreboot).toBeTruthy();
     });
   }));
 
-  it('should lazy load service', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should lazy load service', inject([TestComponentBuilder], (tcb) => {
     return tcb.createAsync(Home).then((fixture) => {
       const { componentInstance, nativeElement } = fixture;
 

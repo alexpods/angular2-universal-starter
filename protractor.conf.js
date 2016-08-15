@@ -14,5 +14,6 @@ exports.config = {
   onPrepare: function() {
     browser.ignoreSynchronization = true;
   },
+  directConnect: true,
   useAllAngular2AppRoots: true
 };

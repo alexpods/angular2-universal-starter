@@ -1,13 +1,11 @@
 declare var require: any;
 
-import { Component } from 'angular2/core';
-import { NgIf } from 'angular2/common';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'preboot-page',
-  directives: [NgIf],
+  selector: 'home',
   template: require('./home.html'),
-  styles: [require('./home.css')]
+  styles:  [require('./home.css')]
 })
 export class Home {
   name = 'World';

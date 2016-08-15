@@ -1,13 +1,14 @@
 import { Router, Request, Response } from 'express';
-import { provide } from 'angular2/core';
-import { PlatformLocation, APP_BASE_HREF, ROUTER_PROVIDERS } from 'angular2/router';
+import { provide } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import {
   REQUEST_URL,
   NODE_LOCATION_PROVIDERS,
   ORIGIN_URL,
   selectorResolver,
   selectorRegExpFactory,
-  renderToStringWithPreboot
+  renderToStringWithPreboot,
+  Bootloader
 } from 'angular2-universal';
 
 import { App } from '../app/app';
@@ -33,11 +34,17 @@ export function renderComponent(html, component, providers, prebootOptions) {
   });
 }
 
-const PROVIDERS = [
-  ROUTER_PROVIDERS,
-  NODE_LOCATION_PROVIDERS,
-  provide(APP_BASE_HREF, { useValue: '/' }),
-];
+if (!global['_bootloader']) {
+  global['_bootloader'] = new Bootloader({
+    template: HTML_FILE,
+    platformProviders: [
+      ...NODE_LOCATION_PROVIDERS,
+      provide(APP_BASE_HREF, { useValue: '/' }),
+    ]
+  });
+}
+
+const bootloader = global['_bootloader'];
 
 const router = Router();
 
@@ -48,12 +55,14 @@ router.get('/*', (req: Request, res: Response, next: Function) => {
   return Promise.resolve()
     .then(() => {
       if (HAS_SS) {
-        const REQUEST_PROVIDERS = [
-          provide(REQUEST_URL, { useValue: req.originalUrl }),
-          provide(ORIGIN_URL, { useValue: getBaseUrlFromRequest(req) })
-        ];
-
-        return renderComponent(HTML_FILE, App, [PROVIDERS, REQUEST_PROVIDERS], PREBOOT);
+        return bootloader.serializeApplication({
+          directives: [App],
+          preboot: PREBOOT,
+          providers: [
+            provide(REQUEST_URL,   { useValue: req.originalUrl }),
+            provide(ORIGIN_URL,    { useValue: getBaseUrlFromRequest(req) })
+          ]
+        });
       }
 
       return HTML_FILE;
