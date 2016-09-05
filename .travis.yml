@@ -22,17 +22,22 @@ before_script:
   # - "npm run webdriver:start &"
 
 script:
+  # Linting
   - npm run lint
 
+  # Minification tests
   - npm run build
   - "if [ $(du -k ./dist/public/vendor.js     | cut -f1) -gt 1000 ]; then exit 1; fi"
   - "if [ $(du -k ./dist/public/browser.js    | cut -f1) -gt 80 ];   then exit 1; fi"
   - "if [ $(du -k ./dist/public/worker.js     | cut -f1) -gt 80 ];   then exit 1; fi"
   - "if [ $(du -k ./dist/public/worker_app.js | cut -f1) -gt 250 ];  then exit 1; fi"
 
-  # - npm start
+  # Starting/stopping
+  - npm start
+  - npm stop
+
+  # Unit tests
   - npm run unit
-  # - npm stop
 
   # - "kill $(lsof -t -i:3000) | true"
 
