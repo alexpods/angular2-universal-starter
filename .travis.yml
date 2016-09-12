@@ -27,10 +27,10 @@ script:
 
   # Minification tests
   - npm run build
-  - "if [ $(du -k ./dist/public/vendor.js     | cut -f1) -gt 1000 ]; then exit 1; fi"
-  - "if [ $(du -k ./dist/public/browser.js    | cut -f1) -gt 80 ];   then exit 1; fi"
-  - "if [ $(du -k ./dist/public/worker.js     | cut -f1) -gt 80 ];   then exit 1; fi"
-  - "if [ $(du -k ./dist/public/worker_app.js | cut -f1) -gt 250 ];  then exit 1; fi"
+  - "if [ $(du -k ./dist/public/vendor.js     | cut -f1) -gt 950 ];  then exit 1; fi"
+  - "if [ $(du -k ./dist/public/browser.js    | cut -f1) -gt 10 ];   then exit 1; fi"
+  - "if [ $(du -k ./dist/public/worker.js     | cut -f1) -gt 5 ];    then exit 1; fi"
+  - "if [ $(du -k ./dist/public/worker_app.js | cut -f1) -gt 12 ];   then exit 1; fi"
 
   # Starting/stopping
   - npm start
